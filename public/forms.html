@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Newsletter Signup</title>
+</head>
+<body>
+  <!-- Netlify Form Detection -->
+  <!-- This hidden form helps Netlify detect the newsletter form at build time -->
+  <form name="newsletter" netlify netlify-honeypot="bot-field" hidden>
+    <input type="email" name="email" />
+    <input type="text" name="bot-field" />
+  </form>
+</body>
+</html>

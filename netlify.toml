@@ -1,0 +1,25 @@
+[build]
+  command = "pnpm build"
+  publish = ".next"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Form notifications
+[build.environment]
+  NEXT_TELEMETRY_DISABLED = "1"
+
+# Redirect rules for Next.js
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Forms configuration - Email notifications will be sent for each submission
+# You need to configure email notifications in Netlify dashboard:
+# 1. Go to Site Settings > Forms
+# 2. Click "Form notifications"
+# 3. Add email notification with your email address
+# 4. You'll receive an email for every form submission
+
+# The newsletter form will automatically be detected by Netlify
