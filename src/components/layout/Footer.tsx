@@ -21,7 +21,7 @@ const Footer = () => {
       const response = await fetch('/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(formData as any).toString(),
+        body: new URLSearchParams(formData as unknown as Record<string, string>).toString(),
       });
 
       if (response.ok) {
@@ -61,7 +61,7 @@ const Footer = () => {
               <input type="hidden" name="form-name" value="newsletter" />
               <p className="hidden">
                 <label>
-                  Don't fill this out if you're human: <input name="bot-field" />
+                  Don&apos;t fill this out if you&apos;re human: <input name="bot-field" />
                 </label>
               </p>
               <Input

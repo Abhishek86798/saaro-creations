@@ -7,17 +7,7 @@ import { Heart, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export default function NewLaunchPage() {
-  const [selectedFilters, setSelectedFilters] = React.useState<{
-    productTypes: string[];
-    sizes: string[];
-    priceRange: { min: number; max: number };
-    discounts: string[];
-  }>({
-    productTypes: [],
-    sizes: [],
-    priceRange: { min: 0, max: 500000 },
-    discounts: []
-  });
+  // Filter state can be added when filter functionality is implemented
 
   const [sortBy, setSortBy] = React.useState('featured');
   const [wishlist, setWishlist] = React.useState<number[]>([]);
