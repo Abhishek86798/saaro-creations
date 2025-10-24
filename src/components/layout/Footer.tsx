@@ -107,8 +107,8 @@ const Footer = () => {
               <div className="flex items-start gap-3">
                 <Phone className="h-4 w-4 mt-0.5 text-amber-500 flex-shrink-0" />
                 <div>
-                  <p className="text-white font-medium">+91 (800) 123-4567</p>
-                  <p className="text-xs">Mon-Sun: 10 AM - 8 PM</p>
+                  <p className="text-white font-medium">+91 99211 25000</p>
+                  <p className="text-xs">Mon-Sat: 10 AM - 8 PM</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
@@ -117,7 +117,14 @@ const Footer = () => {
               </div>
               <div className="flex items-start gap-3">
                 <MapPin className="h-4 w-4 mt-0.5 text-amber-500 flex-shrink-0" />
-                <p>Indiranagar, Bengaluru - 560038</p>
+                <p>S no 20/3, Mundhwa - Kharadi Rd, opp. Bharat Petroleum, Raghoba Patil Nagar, Wadgaon Sheri, Pune, Maharashtra 411014</p>
+              </div>
+            </div>
+            <div className="mt-4 pt-4 border-t border-gray-700">
+              <p className="text-xs text-gray-500 mb-2">Service Options:</p>
+              <div className="flex flex-wrap gap-2">
+                <span className="text-xs bg-amber-600/20 text-amber-400 px-2 py-1 rounded">Repair Services</span>
+                <span className="text-xs bg-amber-600/20 text-amber-400 px-2 py-1 rounded">Same-day Delivery</span>
               </div>
             </div>
           </div>

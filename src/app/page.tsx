@@ -557,68 +557,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Curated Galleries - Store Locations */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-6">
-            <h2 className="text-4xl font-bold mb-4 text-gray-900 font-serif">Curated Galleries</h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              Our stores exude an aura that&apos;s irresistible with great wood and fabric.
-              <br />
-              Catching your eyes and captivating your mind, our art stands at every nook and corner
-              <br />
-              looking at you. Visit and get consumed.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-            {[
-              {
-                city: 'Dtale Bengaluru',
-                image: '/images/Dtale_Bengaluru.webp',
-                location: 'Bengaluru, Karnataka'
-              },
-              {
-                city: 'DTALE Kochi',
-                image: '/images/DTALE_Kochi.webp',
-                location: 'Kochi, Kerala'
-              },
-              {
-                city: 'Dtale Thrissur',
-                image: '/images/Dtale_Thrissur.webp',
-                location: 'Thrissur, Kerala'
-              }
-            ].map((store, index) => (
-              <div 
-                key={index}
-                className="group cursor-pointer"
-              >
-                <div className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 mb-4">
-                  <Image
-                    src={store.image}
-                    alt={store.city}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-6">
-                    <h3 className="text-2xl font-bold text-white mb-1">{store.city}</h3>
-                    <p className="text-white/90">{store.location}</p>
-                  </div>
-                </div>
-                <Link 
-                  href="/stores"
-                  className="inline-flex items-center gap-2 text-amber-600 hover:text-amber-700 font-semibold text-sm group-hover:gap-3 transition-all"
-                >
-                  Explore Our Store
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Quality Features Section - DTale Modern Style */}
       <section className="py-16 bg-gray-50 border-y">
         <div className="container mx-auto px-4">
