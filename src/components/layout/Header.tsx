@@ -233,9 +233,8 @@ const Header = () => {
             {/* Logo */}
             <Link href="/" className="flex items-center space-x-2">
               <span className="text-2xl font-serif font-bold tracking-tight">
-                SAARO
+                SAARO - Premium Furniture Studio
               </span>
-              <span className="text-2xl font-light tracking-wider">CREATIONS</span>
             </Link>
 
             {/* Top Right Links - Desktop */}

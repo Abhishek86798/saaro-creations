@@ -15,7 +15,7 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: 'Saaro Creations - Premium Furniture Store',
+  title: 'SAARO - Premium Furniture Studio',
   description: 'Discover premium handcrafted furniture for your home. Quality craftsmanship, modern designs, and timeless elegance.',
   keywords: 'furniture, premium furniture, home decor, handcrafted, modern furniture, living room, bedroom, dining room',
 };

@@ -96,9 +96,8 @@ const Footer = () => {
           <div className="lg:col-span-2">
             <Link href="/" className="flex items-center space-x-2 mb-6">
               <span className="text-2xl font-serif font-bold text-amber-500">
-                SAARO
+                SAARO - Premium Furniture Studio
               </span>
-              <span className="text-2xl font-light">CREATIONS</span>
             </Link>
             <p className="text-sm text-gray-400 mb-6 leading-relaxed">
               Crafting timeless furniture with exceptional quality and design. 
