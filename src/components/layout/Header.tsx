@@ -231,9 +231,12 @@ const Header = () => {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
-            <Link href="/" className="flex items-center">
-              <span className="text-lg sm:text-xl font-serif font-bold tracking-tight">
-                SAARO - Premium Furniture Studio
+            <Link href="/" className="flex flex-col items-start">
+              <span className="text-2xl font-serif font-bold tracking-tight">
+                SAARO
+              </span>
+              <span className="text-xs font-medium text-gray-600 tracking-wide">
+                Premium Furniture Studio
               </span>
             </Link>
 
