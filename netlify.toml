@@ -5,9 +5,11 @@
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
-# Form notifications
+# Build environment
 [build.environment]
+  NODE_VERSION = "20"
   NEXT_TELEMETRY_DISABLED = "1"
+  NPM_FLAGS = "--legacy-peer-deps"
 
 # Redirect rules for Next.js
 [[redirects]]
