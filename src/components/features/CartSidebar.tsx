@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { X, Minus, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useCartStore } from '@/store/cart';
+import { useCart } from '@/hooks/useCart';
 import Image from 'next/image';
 
 interface CartSidebarProps {
@@ -12,18 +12,7 @@ interface CartSidebarProps {
 }
 
 const CartSidebar: React.FC<CartSidebarProps> = ({ isOpen, onClose }) => {
-  const [isHydrated, setIsHydrated] = useState(false);
-  
-  const { items, updateQuantity, removeItem } = useCartStore(state => ({
-    items: state.items,
-    updateQuantity: state.updateQuantity,
-    removeItem: state.removeItem
-  }));
-
-  useEffect(() => {
-    useCartStore.persist.rehydrate();
-    setIsHydrated(true);
-  }, []);
+  const { items, updateQuantity, removeItem } = useCart();
 
   const calculateTotal = () => {
     return items.reduce((total, item) => total + (item.price * item.quantity), 0);
@@ -56,9 +45,7 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isOpen, onClose }) => {
 
         {/* Cart Items */}
         <div className="flex-1 overflow-y-auto p-4 space-y-4">
-          {!isHydrated ? (
-            <div className="text-center py-8 text-gray-500">Loading...</div>
-          ) : items.map(item => (
+          {items.map(item => (
             <div key={item.id} className="flex gap-4 border-b pb-4">
               <Image 
                 src={item.image} 
@@ -116,7 +103,7 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isOpen, onClose }) => {
             </div>
           ))}
           
-          {isHydrated && items.length === 0 && (
+          {items.length === 0 && (
             <div className="text-center py-8 text-gray-500">
               Your cart is empty
             </div>

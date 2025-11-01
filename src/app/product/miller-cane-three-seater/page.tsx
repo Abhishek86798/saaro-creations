@@ -4,7 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import { Heart, Share2, Plus, Minus, Ruler, Box, Truck, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useCartStore } from '@/store/cart';
+import { useCart } from '@/hooks/useCart';
 
 const product = {
   id: 'miller-cane-three-seater',
@@ -56,7 +56,7 @@ const ProductPage = () => {
   const [selectedImage, setSelectedImage] = React.useState(0);
   const [quantity, setQuantity] = React.useState(1);
   const [isWishlisted, setIsWishlisted] = React.useState(false);
-  const addToCart = useCartStore(state => state.addItem);
+  const { addItem: addToCart } = useCart();
 
   const handleAddToCart = () => {
     const { id, name, price, originalPrice, discount, images, badge } = product;
