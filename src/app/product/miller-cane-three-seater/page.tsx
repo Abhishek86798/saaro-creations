@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import Image from 'next/image';
 import { Heart, Share2, Plus, Minus, Ruler, Box, Truck, Shield } from 'lucide-react';

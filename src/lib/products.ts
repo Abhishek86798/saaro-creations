@@ -49,11 +49,11 @@ const products: Product[] = [
   // Add more products here
 ];
 
-export const getProduct = (id: string): Product | undefined => {
+export async function getProduct(id: string): Promise<Product | undefined> {
   return products.find(product => product.id === id);
-};
+}
 
-export const getSimilarProducts = (category: string, currentProductId: string): SimilarProduct[] => {
+export async function getSimilarProducts(category: string, currentProductId: string): Promise<SimilarProduct[]> {
   return products
     .filter(product => product.category === category && product.id !== currentProductId)
     .map(product => ({
@@ -66,4 +66,4 @@ export const getSimilarProducts = (category: string, currentProductId: string): 
       category: product.category
     }))
     .slice(0, 4);
-};
+}
