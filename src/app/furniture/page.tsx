@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
+import ProductCard from '@/components/features/ProductCard';
 
 const categories = [
   { id: 1, name: 'Entryway', image: '/images/furniture/Entryway-image.jpg' },
@@ -173,19 +174,12 @@ const products = [
 ];
 
 export default function FurniturePage() {
-  const [wishlist, setWishlist] = useState<number[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState({ min: 0, max: 500000 });
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
   const [selectedDiscounts, setSelectedDiscounts] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState('featured');
-
-  const toggleWishlist = (id: number) => {
-    setWishlist((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
-    );
-  };
 
   const formatPrice = (price: number) => {
     return price.toLocaleString('en-IN');
@@ -394,71 +388,17 @@ export default function FurniturePage() {
             {/* Products Grid */}
             <div className="grid grid-cols-3 gap-6">
               {filteredProducts.map((product) => (
-                <div key={product.id} className="group">
-                  <div className="relative mb-4 overflow-hidden rounded-lg bg-gray-50">
-                    <div className="aspect-[3/4] relative">
-                      <Image
-                        src={product.image}
-                        alt={product.name}
-                        fill
-                        className="object-cover group-hover:scale-110 transition-transform duration-500"
-                      />
-                      {product.badge && (
-                        <div
-                          className={`absolute top-4 left-4 px-3 py-1 text-xs font-semibold ${
-                            product.badge === 'NEW'
-                              ? 'bg-black text-white'
-                              : 'bg-gray-100 text-gray-700'
-                          }`}
-                        >
-                          {product.badge}
-                        </div>
-                      )}
-                      <button
-                        onClick={() => toggleWishlist(product.id)}
-                        className="absolute top-4 right-4 w-10 h-10 bg-white rounded-full flex items-center justify-center hover:bg-gray-50 transition-colors shadow-md"
-                      >
-                        <svg
-                          className={`w-5 h-5 ${
-                            wishlist.includes(product.id)
-                              ? 'fill-red-500 text-red-500'
-                              : 'fill-none text-gray-700'
-                          }`}
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                          />
-                        </svg>
-                      </button>
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="font-medium text-gray-900 mb-2 group-hover:text-amber-600 transition-colors">
-                      {product.name}
-                    </h3>
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="text-lg font-bold text-gray-900">
-                        ₹{formatPrice(product.price)}
-                      </span>
-                      {product.originalPrice && (
-                        <>
-                          <span className="text-sm text-gray-400 line-through">
-                            ₹{formatPrice(product.originalPrice)}
-                          </span>
-                          <span className="text-sm font-semibold text-amber-600">
-                            {product.discount}%OFF
-                          </span>
-                        </>
-                      )}
-                    </div>
-                    <p className="text-xs text-gray-500">EMI starts from ₹ {product.emi.toFixed(2)}</p>
-                  </div>
-                </div>
+                <ProductCard
+                  key={product.id}
+                  id={product.id}
+                  name={product.name}
+                  price={product.price}
+                  originalPrice={product.originalPrice}
+                  discount={product.discount}
+                  image={product.image}
+                  badge={product.badge}
+                  emi={product.emi}
+                />
               ))}
             </div>
           </div>

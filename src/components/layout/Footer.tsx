@@ -120,13 +120,7 @@ const Footer = () => {
                 <p>S no 20/3, Mundhwa - Kharadi Rd, opp. Bharat Petroleum, Raghoba Patil Nagar, Wadgaon Sheri, Pune, Maharashtra 411014</p>
               </div>
             </div>
-            <div className="mt-4 pt-4 border-t border-gray-700">
-              <p className="text-xs text-gray-500 mb-2">Service Options:</p>
-              <div className="flex flex-wrap gap-2">
-                <span className="text-xs bg-amber-600/20 text-amber-400 px-2 py-1 rounded">Repair Services</span>
-                <span className="text-xs bg-amber-600/20 text-amber-400 px-2 py-1 rounded">Same-day Delivery</span>
-              </div>
-            </div>
+            {/* Service options removed */}
           </div>
 
           {/* Furniture Categories */}
