@@ -329,11 +329,11 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Shop By Style Section */}
+      {/* Shop By Type Section */}
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold mb-4 text-gray-900 font-serif">Shop By Style</h2>
+            <h2 className="text-4xl font-bold mb-4 text-gray-900 font-serif">Shop By Type</h2>
             <p className="text-gray-600 text-lg">Find furniture that matches your aesthetic</p>
           </div>
           
@@ -460,99 +460,6 @@ export default function HomePage() {
                 />
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Ready to Ship / In Stock Section */}
-      <section className="py-20 bg-amber-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold mb-4 text-gray-900 font-serif">Ready to Ship</h2>
-            <p className="text-gray-600 text-lg">In stock furniture available for immediate delivery</p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { 
-                name: 'Luna Ottoman', 
-                image: '/images/Accents.webp',
-                price: '₹43,690',
-                discount: '15% Off',
-                emi: '₹3,881.60',
-                badge: 'IN STOCK',
-                status: 'Ready to Ship'
-              },
-              { 
-                name: 'Charlotte Cuddle Couch', 
-                image: '/images/Sofas.webp',
-                price: '₹108,715',
-                discount: '15% Off',
-                emi: '₹9,658.69',
-                badge: 'IN STOCK',
-                status: 'Ready to Ship'
-              },
-              { 
-                name: 'Sylvia Loveseat', 
-                image: '/images/Dining_Chairs.webp',
-                price: '₹127,415',
-                discount: '15% Off',
-                emi: '₹11,320.07',
-                badge: 'IN STOCK',
-                status: 'Ready to Ship'
-              },
-              { 
-                name: 'Keny Boucle Club Sofa', 
-                image: '/images/Coffee_Tables.webp',
-                price: '₹84,915',
-                discount: '15% Off',
-                emi: '₹7,544.20',
-                badge: 'IN STOCK',
-                status: 'Ready to Ship'
-              }
-            ].map((product, index) => (
-              <Link 
-                key={index}
-                href={`/ready-to-ship/${product.name.toLowerCase().replace(/ /g, '-')}`}
-                className="group"
-              >
-                <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300">
-                  <div className="relative h-72 overflow-hidden">
-                    <Image
-                      src={product.image}
-                      alt={product.name}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                    <span className="absolute top-3 left-3 px-3 py-1 text-xs font-bold text-white bg-green-600 rounded">
-                      {product.badge}
-                    </span>
-                    <span className="absolute top-3 right-3 px-2 py-1 text-xs font-medium bg-white/90 text-gray-700 rounded">
-                      {product.status}
-                    </span>
-                  </div>
-                  <div className="p-4">
-                    <h3 className="text-base font-semibold text-gray-900 mb-2 group-hover:text-amber-600 transition-colors line-clamp-2">
-                      {product.name}
-                    </h3>
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="text-lg font-bold text-gray-900">{product.price}</span>
-                      {product.discount && (
-                        <span className="text-sm text-green-600 font-medium">{product.discount}</span>
-                      )}
-                    </div>
-                    <p className="text-xs text-gray-500">EMI starts from {product.emi}</p>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-          
-          <div className="text-center mt-10">
-            <Button size="lg" className="bg-amber-600 hover:bg-amber-700">
-              View All In Stock Items
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
           </div>
         </div>
       </section>
