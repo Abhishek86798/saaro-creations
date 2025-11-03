@@ -1,10 +1,12 @@
 'use client';
 
 import React from 'react';
-import { X, Minus, Plus } from 'lucide-react';
+import { X, Minus, Plus, ShoppingBag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useCart } from '@/hooks/useCart';
+import { useCartStore } from '@/store/cartStore';
+import { formatPrice } from '@/lib/transforms';
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface CartSidebarProps {
   isOpen: boolean;
@@ -12,16 +14,16 @@ interface CartSidebarProps {
 }
 
 const CartSidebar: React.FC<CartSidebarProps> = ({ isOpen, onClose }) => {
-  const { items, updateQuantity, removeItem } = useCart();
-
-  const calculateTotal = () => {
-    return items.reduce((total, item) => total + (item.price * item.quantity), 0);
-  };
+  const { items, updateQuantity, removeItem, getTotal, getItemCount } = useCartStore();
 
   const calculateSavings = () => {
     return items.reduce((total, item) => 
-      total + (((item.originalPrice || item.price) - item.price) * item.quantity), 0);
+      total + ((item.originalPrice - item.price) * item.quantity), 0);
   };
+
+  const totalAmount = getTotal();
+  const savings = calculateSavings();
+  const itemCount = getItemCount();
 
   return (
     <div 
@@ -45,68 +47,73 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isOpen, onClose }) => {
 
         {/* Cart Items */}
         <div className="flex-1 overflow-y-auto p-4 space-y-4">
-          {items.map(item => (
-            <div key={item.id} className="flex gap-4 border-b pb-4">
-              <Image 
-                src={item.image} 
-                alt={item.name}
-                width={96}
-                height={96}
-                className="object-cover rounded"
-              />
-              <div className="flex-1">
-                <div className="flex justify-between">
-                  <h3 className="font-medium">{item.name}</h3>
-                  <button 
-                    onClick={() => removeItem(item.id)} 
-                    className="text-gray-400 hover:text-gray-600"
-                    title={`Remove ${item.name} from cart`}
-                    aria-label={`Remove ${item.name} from cart`}
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
+          {items.length === 0 ? (
+            <div className="text-center py-12">
+              <ShoppingBag className="h-16 w-16 mx-auto text-gray-300 mb-4" />
+              <p className="text-gray-500 mb-4">Your cart is empty</p>
+              <Button onClick={onClose} variant="outline">
+                Continue Shopping
+              </Button>
+            </div>
+          ) : (
+            items.map(item => (
+              <div key={item.id} className="flex gap-4 border-b pb-4">
+                <div className="relative w-24 h-24 flex-shrink-0">
+                  <Image 
+                    src={item.image} 
+                    alt={item.name}
+                    fill
+                    className="object-cover rounded"
+                  />
                 </div>
-                <div className="mt-2 flex justify-between items-end">
-                  <div>
-                    <span className="text-lg font-semibold">₹{item.price.toLocaleString()}</span>
-                    {item.originalPrice !== null && item.originalPrice > item.price && (
-                      <>
-                        <span className="ml-2 text-sm line-through text-gray-400">
-                          ₹{item.originalPrice.toLocaleString()}
-                        </span>
-                        <span className="ml-2 text-sm text-orange-500">{item.discount}</span>
-                      </>
-                    )}
+                <div className="flex-1 min-w-0">
+                  <div className="flex justify-between gap-2">
+                    <h3 className="font-medium text-sm line-clamp-2">{item.name}</h3>
+                    <button 
+                      onClick={() => removeItem(item.id)} 
+                      className="text-gray-400 hover:text-gray-600 flex-shrink-0"
+                      title={`Remove ${item.name} from cart`}
+                      aria-label={`Remove ${item.name} from cart`}
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                      className="p-1 hover:bg-gray-100 rounded"
-                      title={`Decrease ${item.name} quantity`}
-                      aria-label={`Decrease ${item.name} quantity`}
-                      disabled={item.quantity <= 1}
-                    >
-                      <Minus className="h-4 w-4" />
-                    </button>
-                    <span className="w-8 text-center">{item.quantity}</span>
-                    <button
-                      onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                      className="p-1 hover:bg-gray-100 rounded"
-                      title={`Increase ${item.name} quantity`}
-                      aria-label={`Increase ${item.name} quantity`}
-                    >
-                      <Plus className="h-4 w-4" />
-                    </button>
+                  {item.badge && (
+                    <span className="text-xs text-gray-500 mt-1 block">{item.badge}</span>
+                  )}
+                  <div className="mt-2 flex justify-between items-end">
+                    <div>
+                      <span className="text-lg font-semibold">₹{formatPrice(item.price)}</span>
+                      {item.originalPrice > item.price && (
+                        <span className="ml-2 text-xs line-through text-gray-400">
+                          ₹{formatPrice(item.originalPrice)}
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-2 border rounded">
+                      <button
+                        onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                        className="p-1 hover:bg-gray-100"
+                        title={`Decrease ${item.name} quantity`}
+                        aria-label={`Decrease ${item.name} quantity`}
+                        disabled={item.quantity <= 1}
+                      >
+                        <Minus className="h-3 w-3" />
+                      </button>
+                      <span className="w-6 text-center text-sm">{item.quantity}</span>
+                      <button
+                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                        className="p-1 hover:bg-gray-100"
+                        title={`Increase ${item.name} quantity`}
+                        aria-label={`Increase ${item.name} quantity`}
+                      >
+                        <Plus className="h-3 w-3" />
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
-          
-          {items.length === 0 && (
-            <div className="text-center py-8 text-gray-500">
-              Your cart is empty
-            </div>
+            ))
           )}
         </div>
 
@@ -114,25 +121,41 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isOpen, onClose }) => {
         {items.length > 0 && (
           <div className="border-t p-4 space-y-4">
             <div className="space-y-2">
-              <div className="flex justify-between">
-                <span>Subtotal</span>
-                <span>₹{calculateTotal().toLocaleString()}</span>
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-600">Subtotal ({itemCount} items)</span>
+                <span className="font-semibold">₹{formatPrice(totalAmount)}</span>
               </div>
-              <div className="flex justify-between text-orange-500">
-                <span>Total Savings</span>
-                <span>₹{calculateSavings().toLocaleString()}</span>
-              </div>
-              <div className="flex justify-between text-sm text-gray-500">
+              {savings > 0 && (
+                <div className="flex justify-between text-sm text-green-600">
+                  <span>Total Savings</span>
+                  <span>₹{formatPrice(savings)}</span>
+                </div>
+              )}
+              <div className="flex justify-between text-sm text-gray-600">
                 <span>Shipping</span>
-                <span>FREE</span>
+                <span className="text-green-600 font-medium">FREE</span>
+              </div>
+              <div className="border-t pt-2 mt-2">
+                <div className="flex justify-between">
+                  <span className="font-semibold">Total</span>
+                  <span className="font-semibold text-lg">₹{formatPrice(totalAmount)}</span>
+                </div>
               </div>
             </div>
             
+            <Link href="/checkout" onClick={onClose}>
+              <Button 
+                className="w-full bg-neutral-900 hover:bg-neutral-800 text-white py-3"
+              >
+                Proceed to Checkout
+              </Button>
+            </Link>
             <Button 
-              className="w-full bg-neutral-900 hover:bg-neutral-800 text-white py-3"
-              onClick={() => {/* Implement checkout */}}
+              variant="outline"
+              className="w-full"
+              onClick={onClose}
             >
-              Proceed to Checkout
+              Continue Shopping
             </Button>
           </div>
         )}

@@ -6,33 +6,46 @@ import Link from 'next/link';
 import { ChevronRight, Minus, Plus, Share2, Heart, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import type { Product, SimilarProduct } from '@/types/product';
+import { useCartStore } from '@/store/cartStore';
+import { useWishlistStore } from '@/store/wishlistStore';
+import { formatPrice } from '@/lib/transforms';
 
 interface ProductDetailProps {
   product: Product;
   similarProducts: SimilarProduct[];
 }
 
-interface Section {
-  title: string;
-  content: React.ReactNode;
-}
-
-interface FabricOption {
-  name: string;
-  image: string;
-  available: boolean;
-}
-
-interface PolishOption {
-  name: string;
-  image: string;
-  available: boolean;
-}
-
 const ProductDetail: React.FC<ProductDetailProps> = ({ product, similarProducts }) => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
-  const [isWishlisted, setIsWishlisted] = useState(false);
+  
+  const { addItem: addToCart } = useCartStore();
+  const { toggleItem: toggleWishlist, isInWishlist } = useWishlistStore();
+  const isWishlisted = isInWishlist(product.id);
+
+  const handleAddToCart = () => {
+    for (let i = 0; i < quantity; i++) {
+      addToCart({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        originalPrice: product.originalPrice,
+        image: product.images[0]?.url || '/images/avatar.png',
+        badge: product.badge,
+      });
+    }
+  };
+
+  const handleToggleWishlist = () => {
+    toggleWishlist({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      originalPrice: product.originalPrice,
+      image: product.images[0]?.url || '/images/avatar.png',
+      badge: product.badge,
+    });
+  };
 
   if (!product) {
     return (
@@ -111,11 +124,11 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product, similarProducts 
               <h1 className="text-3xl font-medium">{product.name}</h1>
               <div className="mt-4 space-y-2">
                 <div className="flex items-baseline gap-4">
-                  <span className="text-2xl">₹{product.price.toLocaleString()}</span>
+                  <span className="text-2xl">₹{formatPrice(product.price)}</span>
                   {product.originalPrice > product.price && (
                     <>
                       <span className="text-lg line-through text-gray-400">
-                        ₹{product.originalPrice.toLocaleString()}
+                        ₹{formatPrice(product.originalPrice)}
                       </span>
                       <span className="text-orange-500">{product.discount}% OFF</span>
                     </>
@@ -126,7 +139,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product, similarProducts 
                 </div>
                 {product.emi && (
                   <div className="flex items-center gap-2 text-sm">
-                    <span>EMI starts from ₹{product.emi.startingPrice.toLocaleString()}</span>
+                    <span>EMI starts from ₹{formatPrice(product.emi.startingPrice)}</span>
                     <button className="text-orange-500 hover:underline">View Plans</button>
                   </div>
                 )}
@@ -224,30 +237,29 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product, similarProducts 
 
                 <Button
                   className="flex-1 bg-black hover:bg-gray-900 text-white py-6"
-                  onClick={() => {/* Add to cart */}}
+                  onClick={handleAddToCart}
                 >
-                  Add to Cart
+                  ADD TO CART
                 </Button>
+
+                <button
+                  onClick={handleToggleWishlist}
+                  className={`p-4 border rounded hover:bg-gray-50 transition-colors ${
+                    isWishlisted ? 'text-red-500 border-red-500' : ''
+                  }`}
+                  aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
+                >
+                  <Heart className="h-6 w-6" fill={isWishlisted ? 'currentColor' : 'none'} />
+                </button>
               </div>
 
               <div className="flex gap-4">
-                <Button
-                  className={`flex-1 ${
-                    isWishlisted ? 'text-orange-500' : 'text-gray-600'
-                  }`}
-                  variant="outline"
-                  onClick={() => setIsWishlisted(!isWishlisted)}
-                >
-                  <Heart className="h-5 w-5 mr-2" />
-                  {isWishlisted ? 'Wishlisted' : 'Add to Wishlist'}
+                <Button variant="outline" className="flex-1">
+                  BUY NOW
                 </Button>
-                <Button
-                  className="flex-1 text-gray-600"
-                  variant="outline"
-                >
-                  <Share2 className="h-5 w-5 mr-2" />
-                  Share
-                </Button>
+                <button className="p-3 border rounded hover:bg-gray-50" aria-label="Share product">
+                  <Share2 className="h-5 w-5" />
+                </button>
               </div>
             </div>
 

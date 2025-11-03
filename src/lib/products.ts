@@ -12,7 +12,7 @@ export const products: Product[] = [
     isNew: false,
     images: [
       {
-        url: '/images/furniture/nicholas-lounge-chair.webp',
+        url: '/images/furniture/Nicholas_Lounge_Chair.webp',
         alt: 'Nicholas Lounge Chair',
         isThumbnail: true
       }
@@ -34,7 +34,7 @@ export const products: Product[] = [
     isNew: false,
     images: [
       {
-        url: '/images/furniture/candice-rattan-single-seater.webp',
+        url: '/images/furniture/Candice_Rattan_Single_Seater.webp',
         alt: 'Candice Rattan Single Seater',
         isThumbnail: true
       }
@@ -56,7 +56,7 @@ export const products: Product[] = [
     isNew: false,
     images: [
       {
-        url: '/images/furniture/ebba-chaise-sectional-sofa.webp',
+        url: '/images/furniture/Ebba_Chaise_Sectional_Sofa.webp',
         alt: 'Ebba Chaise Sectional Sofa',
         isThumbnail: true
       }
@@ -79,7 +79,7 @@ export const products: Product[] = [
     isNew: false,
     images: [
       {
-        url: '/images/furniture/jake-modular-sectional-sofa.webp',
+        url: '/images/furniture/Jake_Modular_Sectional_Sofa.webp',
         alt: 'Jake Modular Sectional Sofa',
         isThumbnail: true
       }
@@ -92,29 +92,8 @@ export const products: Product[] = [
       terms: '12 months'
     }
   },
-  {
-    id: 'arcana-rattan-chair',
-    name: 'Arcana Rattan Chair',
-    slug: 'arcana-rattan-chair',
-    price: 34000,
-    originalPrice: 40000,
-    discount: '15',
-    isNew: false,
-    images: [
-      {
-        url: '/images/furniture/arcana-rattan-chair.webp',
-        alt: 'Arcana Rattan Chair',
-        isThumbnail: true
-      }
-    ],
-    category: 'Living',
-    type: 'Chairs',
-    badge: 'MADE TO ORDER',
-    emi: {
-      startingPrice: 3564,
-      terms: '12 months'
-    }
-  },
+  
+  
   {
     id: 'zenora-three-seater-sofa',
     name: 'Zenora Three-Seater Sofa',
@@ -125,7 +104,7 @@ export const products: Product[] = [
     isNew: false,
     images: [
       {
-        url: '/images/furniture/zenora-three-seater-sofa.webp',
+        url: '/images/furniture/Zenora_Three-Seater_Sofa.webp',
         alt: 'Zenora Three-Seater Sofa',
         isThumbnail: true
       }
@@ -148,7 +127,7 @@ export const products: Product[] = [
     isNew: true,
     images: [
       {
-        url: '/images/furniture/eloise-three-seater-sofa.webp',
+        url: '/images/furniture/Eloise_Three_Seater_Sofa.webp',
         alt: 'Eloise Three Seater Sofa',
         isThumbnail: true
       }
@@ -171,7 +150,7 @@ export const products: Product[] = [
     isNew: false,
     images: [
       {
-        url: '/images/furniture/marcus-chesterfield-three-seater-sofa.webp',
+        url: '/images/furniture/Marcus_Chesterfield_3_Seater_Sofa.webp',
         alt: 'Marcus Chesterfield 3 Seater Sofa',
         isThumbnail: true
       }
@@ -184,29 +163,8 @@ export const products: Product[] = [
       terms: '12 months'
     }
   },
-  {
-    id: 'ahava-chiseled-console',
-    name: 'Ahava Chiseled Console',
-    slug: 'ahava-chiseled-console',
-    price: 95200,
-    originalPrice: 112000,
-    discount: '15',
-    isNew: false,
-    images: [
-      {
-        url: '/images/furniture/ahava-chiseled-console.webp',
-        alt: 'Ahava Chiseled Console',
-        isThumbnail: true
-      }
-    ],
-    category: 'Living',
-    type: 'Console Tables',
-    badge: 'MADE TO ORDER',
-    emi: {
-      startingPrice: 9980,
-      terms: '12 months'
-    }
-  },
+  
+  
   {
     id: 'miller-cane-three-seater',
     name: 'Miller Cane Three Seater Sofa',

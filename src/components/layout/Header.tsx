@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { Search, User, Heart, ShoppingBag, Menu, ChevronDown, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import CartSidebar from '@/components/features/CartSidebar';
+import { useCartStore } from '@/store/cartStore';
+import { useWishlistStore } from '@/store/wishlistStore';
 
 interface SubMenuItem {
   title: string;
@@ -28,7 +30,18 @@ type NavigationData = Record<string, NavItem>;
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const [activeDropdown, setActiveDropdown] = React.useState<string | null>(null);
-  const [isCartOpen, setIsCartOpen] = React.useState(false);
+  const [mounted, setMounted] = React.useState(false);
+  
+  const { isOpen: isCartOpen, setCartOpen, getItemCount } = useCartStore();
+  const { getItemCount: getWishlistCount } = useWishlistStore();
+  
+  const cartCount = getItemCount();
+  const wishlistCount = getWishlistCount();
+
+  // Prevent hydration mismatch by only showing counts after mount
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const navigationData: NavigationData = {
     new: {
@@ -218,22 +231,36 @@ const Header = () => {
                   <User className="h-5 w-5" />
                   <span className="sr-only">Account</span>
                 </Button>
-                <Button variant="ghost" size="icon">
-                  <Heart className="h-5 w-5" />
-                  <span className="sr-only">Wishlist</span>
-                </Button>
-                <Button variant="ghost" size="icon" className="relative" onClick={() => setIsCartOpen(true)}>
+                <Link href="/wishlist">
+                  <Button variant="ghost" size="icon" className="relative">
+                    <Heart className="h-5 w-5" />
+                    {mounted && wishlistCount > 0 && (
+                      <span className="absolute -top-1 -right-1 bg-neutral-900 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                        {wishlistCount}
+                      </span>
+                    )}
+                    <span className="sr-only">Wishlist</span>
+                  </Button>
+                </Link>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="relative" 
+                  onClick={() => setCartOpen(true)}
+                >
                   <ShoppingBag className="h-5 w-5" />
-                  <span className="absolute -top-1 -right-1 bg-neutral-900 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                    0
-                  </span>
+                  {mounted && cartCount > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-neutral-900 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                      {cartCount}
+                    </span>
+                  )}
                   <span className="sr-only">Cart</span>
                 </Button>
                 
                 {/* Cart Sidebar */}
                 <CartSidebar 
                   isOpen={isCartOpen} 
-                  onClose={() => setIsCartOpen(false)} 
+                  onClose={() => setCartOpen(false)} 
                 />
                 <Button
                   variant="ghost"

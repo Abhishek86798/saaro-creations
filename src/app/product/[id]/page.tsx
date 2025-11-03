@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { Metadata, ResolvingMetadata } from 'next';
+import { Metadata } from 'next';
 import { getProduct, getSimilarProducts } from '@/lib/products';
 import { ProductClient } from '@/components/features/ProductClient';
 
@@ -10,10 +10,10 @@ interface ProductPageProps {
 }
 
 export async function generateMetadata(
-  { params }: ProductPageProps,
-  parent: ResolvingMetadata
+  { params }: ProductPageProps
 ): Promise<Metadata> {
-  const product = await getProduct(params.id);
+  const { id } = await params;
+  const product = await getProduct(id);
   
   if (!product) {
     return {
@@ -33,13 +33,14 @@ export async function generateMetadata(
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
-  const product = await getProduct(params.id);
+  const { id } = await params;
+  const product = await getProduct(id);
 
   if (!product) {
     notFound();
   }
 
-  const rawSimilarProducts = await getSimilarProducts(product.category, params.id);
+  const rawSimilarProducts = await getSimilarProducts(product.category, id);
   
   // Transform products to match SimilarProduct type
   const similarProducts = rawSimilarProducts.map(p => ({

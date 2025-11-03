@@ -2,8 +2,11 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ProductCard from '@/components/features/ProductCard';
+import { getAllProducts } from '@/lib/products';
+import { DisplayFurnitureProduct } from '@/types/display';
+import { toDisplayFurnitureProduct } from '@/lib/transforms';
 
 const categories = [
   { id: 1, name: 'Entryway', image: '/images/furniture/Entryway-image.jpg' },
@@ -14,166 +17,8 @@ const categories = [
   { id: 6, name: 'In-Stock Furniture', image: '/images/furniture/In-Stock_Furniture-image.jpg' },
 ];
 
-const products = [
-  {
-    id: 'miller-cane-three-seater',
-    name: 'Miller Cane Three Seater Sofa',
-    price: 204000,
-    originalPrice: 240000,
-    discount: 15,
-    image: '/images/furniture/Miller_Cane_Three_Seater_Sofa.webp',
-    badge: 'MADE TO ORDER',
-    emi: 21386.55,
-    category: 'Living',
-    type: 'Sofas & Sectionals',
-    size: '8 feet',
-  },
-  {
-    id: 'morgan-three-seater',
-    name: 'Morgan Three Seater Sofa-Copeland Bark',
-    price: 195000,
-    originalPrice: 260000,
-    discount: 25,
-    image: '/images/furniture/Morgan_Three_Seater_Sofa-Copeland_Bark.webp',
-    badge: 'MADE TO ORDER',
-    emi: 20443.03,
-    category: 'Living',
-    type: 'Sofas & Sectionals',
-    size: '8 feet',
-  },
-  {
-    id: 'moris-lounge-chair',
-    name: 'Moris Lounge Chair',
-    price: 88400,
-    originalPrice: null,
-    discount: 0,
-    image: '/images/furniture/Moris_Lounge_Chair.webp',
-    badge: 'MADE TO ORDER',
-    emi: 9267.51,
-    category: 'Living',
-    type: 'Accent | Lounge Chairs',
-    size: 'M',
-  },
-  {
-    id: 'nicholas-lounge-chair',
-    name: 'Nicholas Lounge Chair',
-    price: 90000,
-    originalPrice: 120000,
-    discount: 25,
-    image: '/images/furniture/Nicholas_Lounge_Chair.webp',
-    badge: 'MADE TO ORDER',
-    emi: 9435.24,
-    category: 'Living',
-    type: 'Accent | Lounge Chairs',
-    size: 'M',
-  },
-  {
-    id: 'candice-rattan-single-seater',
-    name: 'Candice Rattan Single Seater',
-    price: 65925,
-    originalPrice: null,
-    discount: 0,
-    image: '/images/furniture/Candice_Rattan_Single_Seater.webp',
-    badge: 'MADE TO ORDER',
-    emi: 6911.32,
-    category: 'Living',
-    type: 'Accent | Lounge Chairs',
-    size: 'M',
-  },
-  {
-    id: 'ebba-chaise-sectional-sofa',
-    name: 'Ebba Chaise Sectional Sofa',
-    price: 301750,
-    originalPrice: null,
-    discount: 0,
-    image: '/images/furniture/Ebba_Chaise_Sectional_Sofa.webp',
-    badge: 'MADE TO ORDER',
-    emi: 31634.28,
-    category: 'Living',
-    type: 'Sofas & Sectionals',
-    size: '10 feet',
-  },
-  {
-    id: 'jake-modular-sectional-sofa',
-    name: 'Jake Modular Sectional Sofa',
-    price: 333200,
-    originalPrice: 392000,
-    discount: 15,
-    image: '/images/furniture/Jake_Modular_Sectional_Sofa.webp',
-    badge: 'MADE TO ORDER',
-    emi: 34931.37,
-    category: 'Living',
-    type: 'Sofas & Sectionals',
-    size: '10 feet',
-  },
-  {
-    id: 'arcana-rattan-chair',
-    name: 'Arcana Rattan Chair',
-    price: 34000,
-    originalPrice: 40000,
-    discount: 15,
-    image: '/images/furniture/Arcana_Rattan_Chair.webp',
-    badge: 'MADE TO ORDER',
-    emi: 3564.43,
-    category: 'Dining',
-    type: 'Dining Chairs',
-    size: 'M',
-  },
-  {
-    id: 'zenora-three-seater-sofa',
-    name: 'Zenora Three-Seater Sofa',
-    price: 185250,
-    originalPrice: 195000,
-    discount: 5,
-    image: '/images/furniture/Zenora_Three-Seater_Sofa.webp',
-    badge: 'MADE TO ORDER',
-    emi: 19420.88,
-    category: 'Living',
-    type: 'Sofas & Sectionals',
-    size: '7 feet',
-  },
-  {
-    id: 'eloise-three-seater-sofa',
-    name: 'Eloise Three Seater Sofa',
-    price: 178030,
-    originalPrice: 187400,
-    discount: 5,
-    image: '/images/furniture/Eloise_Three_Seater_Sofa.webp',
-    badge: 'NEW',
-    emi: 18663.96,
-    category: 'Living',
-    type: 'Sofas & Sectionals',
-    size: '8 feet',
-  },
-  {
-    id: 'marcus-chesterfield-3-seater-sofa',
-    name: 'Marcus Chesterfield 3 Seater Sofa',
-    price: 238000,
-    originalPrice: 280000,
-    discount: 15,
-    image: '/images/furniture/Marcus_Chesterfield_3_Seater_Sofa.webp',
-    badge: 'MADE TO ORDER',
-    emi: 24950.98,
-    category: 'Living',
-    type: 'Sofas & Sectionals',
-    size: '8 feet',
-  },
-  {
-    id: 'ahava-chiseled-console',
-    name: 'Ahava Chiseled Console',
-    price: 95200,
-    originalPrice: 112000,
-    discount: 15,
-    image: '/images/furniture/Ahava_Chiseled_Console.webp',
-    badge: 'MADE TO ORDER',
-    emi: 9980.39,
-    category: 'Entryway',
-    type: 'Console Tables',
-    size: 'L',
-  },
-];
-
 export default function FurniturePage() {
+  const [products, setProducts] = useState<DisplayFurnitureProduct[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState({ min: 0, max: 500000 });
@@ -181,18 +26,30 @@ export default function FurniturePage() {
   const [selectedDiscounts, setSelectedDiscounts] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState('featured');
 
+  // Load products from central data source
+  useEffect(() => {
+    const loadProducts = async () => {
+      const allProducts = await getAllProducts();
+      const displayProducts = allProducts.map(toDisplayFurnitureProduct);
+      setProducts(displayProducts);
+    };
+    loadProducts();
+  }, []);
+
   const formatPrice = (price: number) => {
     return price.toLocaleString('en-IN');
   };
 
-  // Get unique product types
-  const productTypes = Array.from(new Set(products.map((p) => p.type)));
+  // Get unique product types (filter out undefined)
+  const productTypes = Array.from(
+    new Set(products.map((p) => p.type).filter((t): t is string => !!t))
+  );
   const sizes = Array.from(new Set(products.map((p) => p.size)));
 
   // Filter products
   const filteredProducts = products.filter((product) => {
     if (selectedCategory !== 'All' && product.category !== selectedCategory) return false;
-    if (selectedTypes.length > 0 && !selectedTypes.includes(product.type)) return false;
+    if (selectedTypes.length > 0 && product.type && !selectedTypes.includes(product.type)) return false;
     if (selectedSizes.length > 0 && !selectedSizes.includes(product.size)) return false;
     if (product.price < priceRange.min || product.price > priceRange.max) return false;
     if (selectedDiscounts.length > 0) {
@@ -295,14 +152,15 @@ export default function FurniturePage() {
                     value={priceRange.max}
                     onChange={(e) => setPriceRange({ ...priceRange, max: parseInt(e.target.value) })}
                     className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                    aria-label="Maximum price range"
                   />
                 </div>
                 <div className="flex items-center gap-2">
-                  <select className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm">
+                  <select className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm" aria-label="Minimum price">
                     <option>Min</option>
                   </select>
                   <span className="text-gray-400">to</span>
-                  <select className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm">
+                  <select className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm" aria-label="Maximum price">
                     <option>₹ {formatPrice(priceRange.max)}</option>
                   </select>
                 </div>
@@ -375,6 +233,7 @@ export default function FurniturePage() {
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
                   className="px-4 py-2 border border-gray-300 rounded text-sm font-medium"
+                  aria-label="Sort products"
                 >
                   <option value="featured">Featured</option>
                   <option value="price-low">Price: Low to High</option>
