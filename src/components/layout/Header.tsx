@@ -180,11 +180,11 @@ const Header = () => {
 
       {/* Main Header */}
       <header className="border-b bg-white sticky top-0 z-50 shadow-sm">
-        {/* Top Section with Logo and Actions */}
+        {/* Top Section with Logo */}
         <div className="container mx-auto px-4">
-          <div className="flex flex-col items-center justify-center h-24">
+          <div className="flex flex-col items-center justify-center py-4">
             {/* Logo */}
-            <Link href="/" className="flex flex-col items-center text-center mb-4">
+            <Link href="/" className="flex flex-col items-center text-center">
               <span className="text-2xl font-serif font-bold tracking-tight text-orange-500">
                 SAARO
               </span>
@@ -193,55 +193,58 @@ const Header = () => {
               </span>
             </Link>
 
-            {/* Top Links - Desktop */}
-            <div className="hidden lg:flex items-center space-x-8 text-sm mt-2">
-              <Link href="/best-sellers" className="hover:text-neutral-600 transition-colors">
-                Best Sellers
-              </Link>
-              <Link href="/design-masters" className="hover:text-neutral-600 transition-colors">
-                Design Masters
-              </Link>
-              <Link href="/interior-services" className="hover:text-neutral-600 transition-colors">
-                Interior Services
-              </Link>
-            </div>
+            {/* Second Row: Links and Action Icons */}
+            <div className="flex items-center justify-between w-full mt-4 lg:justify-center lg:gap-8">
+              {/* Top Links - Desktop */}
+              <div className="hidden lg:flex items-center space-x-8 text-sm">
+                <Link href="/best-sellers" className="hover:text-neutral-600 transition-colors">
+                  Best Sellers
+                </Link>
+                <Link href="/design-masters" className="hover:text-neutral-600 transition-colors">
+                  Design Masters
+                </Link>
+                <Link href="/interior-services" className="hover:text-neutral-600 transition-colors">
+                  Interior Services
+                </Link>
+              </div>
 
-            {/* Action Icons */}
-            <div className="absolute right-4 top-4 flex items-center space-x-2 md:space-x-3">
-              <Button variant="ghost" size="icon" className="hidden md:flex">
-                <Search className="h-5 w-5" />
-                <span className="sr-only">Search</span>
-              </Button>
-              <Button variant="ghost" size="icon" className="hidden md:flex">
-                <User className="h-5 w-5" />
-                <span className="sr-only">Account</span>
-              </Button>
-              <Button variant="ghost" size="icon">
-                <Heart className="h-5 w-5" />
-                <span className="sr-only">Wishlist</span>
-              </Button>
-              <Button variant="ghost" size="icon" className="relative" onClick={() => setIsCartOpen(true)}>
-                <ShoppingBag className="h-5 w-5" />
-                <span className="absolute -top-1 -right-1 bg-neutral-900 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                  0
-                </span>
-                <span className="sr-only">Cart</span>
-              </Button>
-              
-              {/* Cart Sidebar */}
-              <CartSidebar 
-                isOpen={isCartOpen} 
-                onClose={() => setIsCartOpen(false)} 
-              />
-              <Button
-                variant="ghost"
-                size="icon"
-                className="lg:hidden"
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              >
-                {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-                <span className="sr-only">Menu</span>
-              </Button>
+              {/* Action Icons */}
+              <div className="flex items-center space-x-2 md:space-x-3 ml-auto lg:ml-8">
+                <Button variant="ghost" size="icon" className="hidden md:flex">
+                  <Search className="h-5 w-5" />
+                  <span className="sr-only">Search</span>
+                </Button>
+                <Button variant="ghost" size="icon" className="hidden md:flex">
+                  <User className="h-5 w-5" />
+                  <span className="sr-only">Account</span>
+                </Button>
+                <Button variant="ghost" size="icon">
+                  <Heart className="h-5 w-5" />
+                  <span className="sr-only">Wishlist</span>
+                </Button>
+                <Button variant="ghost" size="icon" className="relative" onClick={() => setIsCartOpen(true)}>
+                  <ShoppingBag className="h-5 w-5" />
+                  <span className="absolute -top-1 -right-1 bg-neutral-900 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                    0
+                  </span>
+                  <span className="sr-only">Cart</span>
+                </Button>
+                
+                {/* Cart Sidebar */}
+                <CartSidebar 
+                  isOpen={isCartOpen} 
+                  onClose={() => setIsCartOpen(false)} 
+                />
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="lg:hidden"
+                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                >
+                  {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+                  <span className="sr-only">Menu</span>
+                </Button>
+              </div>
             </div>
           </div>
 

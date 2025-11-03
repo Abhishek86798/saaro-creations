@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { Heart } from 'lucide-react';
 
 interface ProductCardProps {
-  id: string | number;
+  id: string;
   name: string;
   price: number;
   originalPrice: number | null;

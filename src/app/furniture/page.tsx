@@ -16,7 +16,7 @@ const categories = [
 
 const products = [
   {
-    id: 1,
+    id: 'miller-cane-three-seater',
     name: 'Miller Cane Three Seater Sofa',
     price: 204000,
     originalPrice: 240000,
@@ -29,7 +29,7 @@ const products = [
     size: '8 feet',
   },
   {
-    id: 2,
+    id: 'morgan-three-seater',
     name: 'Morgan Three Seater Sofa-Copeland Bark',
     price: 195000,
     originalPrice: 260000,
@@ -42,7 +42,7 @@ const products = [
     size: '8 feet',
   },
   {
-    id: 3,
+    id: 'moris-lounge-chair',
     name: 'Moris Lounge Chair',
     price: 88400,
     originalPrice: null,
@@ -55,7 +55,7 @@ const products = [
     size: 'M',
   },
   {
-    id: 4,
+    id: 'nicholas-lounge-chair',
     name: 'Nicholas Lounge Chair',
     price: 90000,
     originalPrice: 120000,
@@ -68,7 +68,7 @@ const products = [
     size: 'M',
   },
   {
-    id: 5,
+    id: 'candice-rattan-single-seater',
     name: 'Candice Rattan Single Seater',
     price: 65925,
     originalPrice: null,
@@ -81,7 +81,7 @@ const products = [
     size: 'M',
   },
   {
-    id: 6,
+    id: 'ebba-chaise-sectional-sofa',
     name: 'Ebba Chaise Sectional Sofa',
     price: 301750,
     originalPrice: null,
@@ -94,7 +94,7 @@ const products = [
     size: '10 feet',
   },
   {
-    id: 7,
+    id: 'jake-modular-sectional-sofa',
     name: 'Jake Modular Sectional Sofa',
     price: 333200,
     originalPrice: 392000,
@@ -107,7 +107,7 @@ const products = [
     size: '10 feet',
   },
   {
-    id: 8,
+    id: 'arcana-rattan-chair',
     name: 'Arcana Rattan Chair',
     price: 34000,
     originalPrice: 40000,
@@ -120,7 +120,7 @@ const products = [
     size: 'M',
   },
   {
-    id: 9,
+    id: 'zenora-three-seater-sofa',
     name: 'Zenora Three-Seater Sofa',
     price: 185250,
     originalPrice: 195000,
@@ -133,7 +133,7 @@ const products = [
     size: '7 feet',
   },
   {
-    id: 10,
+    id: 'eloise-three-seater-sofa',
     name: 'Eloise Three Seater Sofa',
     price: 178030,
     originalPrice: 187400,
@@ -146,7 +146,7 @@ const products = [
     size: '8 feet',
   },
   {
-    id: 11,
+    id: 'marcus-chesterfield-3-seater-sofa',
     name: 'Marcus Chesterfield 3 Seater Sofa',
     price: 238000,
     originalPrice: 280000,
@@ -159,7 +159,7 @@ const products = [
     size: '8 feet',
   },
   {
-    id: 12,
+    id: 'ahava-chiseled-console',
     name: 'Ahava Chiseled Console',
     price: 95200,
     originalPrice: 112000,

@@ -10,11 +10,11 @@ export default function NewLaunchPage() {
   // Filter state can be added when filter functionality is implemented
 
   const [sortBy, setSortBy] = React.useState('featured');
-  const [wishlist, setWishlist] = React.useState<number[]>([]);
+  const [wishlist, setWishlist] = React.useState<string[]>([]);
 
   const products = [
     {
-      id: 1,
+      id: 'zigzag-storage-cabinet-2-shutter',
       name: 'Zigzag Multifunctional Storage Cabinet - 2 Shutter',
       image: '/images/Armoires_Wardrobes.webp',
       price: 108300,
@@ -26,7 +26,7 @@ export default function NewLaunchPage() {
       category: 'Console'
     },
     {
-      id: 2,
+      id: 'zigzag-storage-cabinet-3-shutter',
       name: 'Zigzag Multifunctional Storage Cabinet - 3 Shutter',
       image: '/images/Armoires_Wardrobes.webp',
       price: 127300,
@@ -38,7 +38,7 @@ export default function NewLaunchPage() {
       category: 'Console'
     },
     {
-      id: 3,
+      id: 'zigzag-media-console-s',
       name: 'Zigzag Media Console - S',
       image: '/images/Coffee_Tables.webp',
       price: 83980,
@@ -50,7 +50,7 @@ export default function NewLaunchPage() {
       category: 'Media Console'
     },
     {
-      id: 4,
+      id: 'zigzag-media-console-m',
       name: 'Zigzag Media Console - M',
       image: '/images/Coffee_Tables.webp',
       price: 103930,
@@ -62,7 +62,7 @@ export default function NewLaunchPage() {
       category: 'Media Console'
     },
     {
-      id: 5,
+      id: 'zigzag-media-console-l',
       name: 'Zigzag Media Console - L',
       image: '/images/Coffee_Tables.webp',
       price: 120080,
@@ -74,7 +74,7 @@ export default function NewLaunchPage() {
       category: 'Media Console'
     },
     {
-      id: 6,
+      id: 'kaalai-painted-bull-sculpture',
       name: 'Kaalai Painted Bull Sculpture',
       image: '/images/Accents.webp',
       price: 10900,
@@ -86,7 +86,7 @@ export default function NewLaunchPage() {
       category: 'Decor'
     },
     {
-      id: 7,
+      id: 'kaalai-wooden-bull-sculpture',
       name: 'Kaalai Wooden Bull Sculpture',
       image: '/images/Accents.webp',
       price: 9000,
@@ -98,7 +98,7 @@ export default function NewLaunchPage() {
       category: 'Decor'
     },
     {
-      id: 8,
+      id: 'hound-wooden-dog-sculpture',
       name: 'Hound Wooden Dog Sculpture',
       image: '/images/Accents.webp',
       price: 15900,
@@ -110,7 +110,7 @@ export default function NewLaunchPage() {
       category: 'Decor'
     },
     {
-      id: 9,
+      id: 'clement-coffee-table',
       name: 'Clement Coffee Table',
       image: '/images/Coffee_Tables.webp',
       price: 93480,
@@ -122,7 +122,7 @@ export default function NewLaunchPage() {
       category: 'Coffee Table'
     },
     {
-      id: 10,
+      id: 'haden-coffee-table-glam-oxide',
       name: 'Haden Coffee Table - Glam Oxide',
       image: '/images/Coffee_Tables.webp',
       price: 69730,
@@ -134,7 +134,7 @@ export default function NewLaunchPage() {
       category: 'Coffee Table'
     },
     {
-      id: 11,
+      id: 'nicco-coffee-table',
       name: 'Nicco Coffee Table',
       image: '/images/Coffee_Tables.webp',
       price: 89000,
@@ -146,7 +146,7 @@ export default function NewLaunchPage() {
       category: 'Coffee Table'
     },
     {
-      id: 12,
+      id: 'logan-center-table-set',
       name: 'Logan Center Table (Set of 2)',
       image: '/images/Coffee_Tables.webp',
       price: 159030,
@@ -158,7 +158,7 @@ export default function NewLaunchPage() {
       category: 'Center Table'
     },
     {
-      id: 13,
+      id: 'preston-curved-lounge-chair-manuka-honey',
       name: 'Preston Curved Lounge Chair - Manuka Honey',
       image: '/images/Sofas.webp',
       price: 130625,
@@ -170,7 +170,7 @@ export default function NewLaunchPage() {
       category: 'Accent Chair'
     },
     {
-      id: 14,
+      id: 'preston-curved-loveseat-manuka-honey',
       name: 'Preston Curved Loveseat - Manuka Honey',
       image: '/images/Sofas.webp',
       price: 199500,
@@ -182,7 +182,7 @@ export default function NewLaunchPage() {
       category: 'Loveseat'
     },
     {
-      id: 15,
+      id: 'preston-curved-three-seater-manuka-honey',
       name: 'Preston Curved Three Seater Sofa - Manuka Honey',
       image: '/images/Sofas.webp',
       price: 289750,
@@ -194,7 +194,7 @@ export default function NewLaunchPage() {
       category: '3-Seater Sofa'
     },
     {
-      id: 16,
+      id: 'arlo-rattan-chair',
       name: 'Arlo Rattan Chair',
       image: '/images/Dining_Chairs.webp',
       price: 38400,
@@ -206,7 +206,7 @@ export default function NewLaunchPage() {
       category: 'Dining Chair'
     },
     {
-      id: 17,
+      id: 'ryder-dining-chair',
       name: 'Ryder Dining Chair',
       image: '/images/Dining_Chairs.webp',
       price: 31350,
@@ -218,7 +218,7 @@ export default function NewLaunchPage() {
       category: 'Dining Chair'
     },
     {
-      id: 18,
+      id: 'bennet-dining-chair',
       name: 'Bennet Dining Chair',
       image: '/images/Dining_Chairs.webp',
       price: 33725,
@@ -230,7 +230,7 @@ export default function NewLaunchPage() {
       category: 'Dining Chair'
     },
     {
-      id: 19,
+      id: 'kansho-dining-table',
       name: 'Kansho Dining Table',
       image: '/images/Dining_Tables.webp',
       price: 213180,
@@ -242,7 +242,7 @@ export default function NewLaunchPage() {
       category: 'Dining Table'
     },
     {
-      id: 20,
+      id: 'monolith-dining-table',
       name: 'Monolith Dining Table',
       image: '/images/Dining_Tables.webp',
       price: 131100,
@@ -255,7 +255,7 @@ export default function NewLaunchPage() {
     }
   ];
 
-  const toggleWishlist = (productId: number) => {
+  const toggleWishlist = (productId: string) => {
     setWishlist(prev => 
       prev.includes(productId) 
         ? prev.filter(id => id !== productId)

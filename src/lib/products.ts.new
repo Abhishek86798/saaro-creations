@@ -1,0 +1,177 @@
+export interface Product {
+  id: string;
+  name: string;
+  price: number;
+  originalPrice: number;
+  discount: string;
+  isNew?: boolean;
+  images: string[];
+  description: string;
+  features: string[];
+  specifications: Record<string, string>;
+  category: string;
+  emi?: {
+    startingPrice: number;
+  };
+  customization?: {
+    fabricOptions?: Array<{
+      name: string;
+      image: string;
+      available: boolean;
+    }>;
+    polishOptions?: Array<{
+      name: string;
+      image: string;
+      available: boolean;
+    }>;
+  };
+  warranty?: string;
+  returnPolicy?: string;
+  additionalInfo?: string;
+}
+
+export interface SimilarProduct {
+  id: string;
+  name: string;
+  price: number;
+  originalPrice: number;
+  discount: string;
+  image: string;
+  category: string;
+}
+
+export const products: Product[] = [
+  {
+    id: 'miller-cane-three-seater',
+    name: 'Miller Cane Three Seater Sofa',
+    price: 204000,
+    originalPrice: 240000,
+    discount: '15',
+    isNew: true,
+    images: [
+      '/images/furniture/Miller_Cane_Three_Seater_Sofa.webp',
+      '/images/furniture/Miller_Cane_Three_Seater_details.webp',
+      '/images/furniture/Miller_Cane_Three_Seater_side.webp'
+    ],
+    description: 'The Miller Cane Three Seater Sofa combines traditional cane craftsmanship with modern comfort. Perfect for contemporary living spaces.',
+    features: [
+      'Natural cane weaving',
+      'High-resilience foam cushions',
+      'Solid wood frame',
+      'Removable cushion covers',
+      'Contemporary design',
+      '8 feet width for spacious seating'
+    ],
+    specifications: {
+      'Dimensions': '244cm x 89cm x 84cm (WxDxH)',
+      'Material': 'Solid Wood, Natural Cane, Premium Fabric',
+      'Color': 'Manuka Honey',
+      'Weight': '45 kg',
+      'Assembly': 'White glove delivery and assembly included',
+      'Seating Capacity': '3 Adults'
+    },
+    category: 'Living',
+    emi: {
+      startingPrice: 21386
+    },
+    customization: {
+      fabricOptions: [
+        {
+          name: 'Manuka Honey',
+          image: '/images/furniture/fabrics/manuka-honey.webp',
+          available: true
+        },
+        {
+          name: 'Marcel Dusk',
+          image: '/images/furniture/fabrics/marcel-dusk.webp',
+          available: true
+        }
+      ],
+      polishOptions: [
+        {
+          name: 'Golden Teak',
+          image: '/images/furniture/polish/golden-teak.webp',
+          available: true
+        },
+        {
+          name: 'Dark Teak',
+          image: '/images/furniture/polish/dark-teak.webp',
+          available: true
+        }
+      ]
+    },
+    warranty: '3 years warranty on manufacturing defects',
+    returnPolicy: '7 days return policy for manufacturing defects only. Installation charges non-refundable.',
+    additionalInfo: 'Made to order item. Please allow 4-6 weeks for delivery.'
+  },
+  {
+    id: 'morgan-three-seater',
+    name: 'Morgan Three Seater Sofa-Copeland Bark',
+    price: 195000,
+    originalPrice: 260000,
+    discount: '25',
+    isNew: false,
+    images: [
+      '/images/furniture/Morgan_Three_Seater_Sofa-Copeland_Bark.webp',
+      '/images/furniture/Morgan_Three_Seater_details.webp',
+      '/images/furniture/Morgan_Three_Seater_side.webp'
+    ],
+    description: 'The Morgan Three Seater Sofa features clean lines and premium upholstery in Copeland Bark fabric, offering both style and comfort.',
+    features: [
+      'Premium Copeland Bark fabric',
+      'High-density foam seating',
+      'Solid wood frame',
+      'Deep comfortable seating',
+      'Modern design language',
+      'Superior build quality'
+    ],
+    specifications: {
+      'Dimensions': '240cm x 95cm x 85cm (WxDxH)',
+      'Material': 'Solid Wood, Premium Fabric',
+      'Color': 'Copeland Bark',
+      'Weight': '48 kg',
+      'Assembly': 'White glove delivery and assembly included',
+      'Seating Capacity': '3 Adults'
+    },
+    category: 'Living',
+    emi: {
+      startingPrice: 20443
+    },
+    customization: {
+      fabricOptions: [
+        {
+          name: 'Copeland Bark',
+          image: '/images/furniture/fabrics/copeland-bark.webp',
+          available: true
+        },
+        {
+          name: 'Copeland Grey',
+          image: '/images/furniture/fabrics/copeland-grey.webp',
+          available: true
+        }
+      ]
+    },
+    warranty: '3 years warranty on manufacturing defects',
+    returnPolicy: '7 days return policy for manufacturing defects only. Installation charges non-refundable.',
+    additionalInfo: 'Made to order item. Please allow 4-6 weeks for delivery.'
+  }
+];
+
+export async function getProduct(id: string): Promise<Product | undefined> {
+  return products.find(product => product.id === id);
+}
+
+export async function getSimilarProducts(category: string, currentProductId: string): Promise<SimilarProduct[]> {
+  return products
+    .filter(product => product.category === category && product.id !== currentProductId)
+    .map(product => ({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      originalPrice: product.originalPrice,
+      discount: product.discount,
+      image: product.images[0],
+      category: product.category
+    }))
+    .slice(0, 4);
+}

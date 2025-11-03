@@ -2,7 +2,7 @@
 
 import { Suspense } from 'react';
 import ProductDetail from '@/components/features/ProductDetail';
-import type { Product, SimilarProduct } from '@/lib/products';
+import type { Product, SimilarProduct } from '@/types/product';
 
 function LoadingFallback() {
   return (

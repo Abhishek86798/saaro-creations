@@ -3,13 +3,30 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Minus, Plus, Share2, Heart } from 'lucide-react';
+import { ChevronRight, Minus, Plus, Share2, Heart, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import type { Product, SimilarProduct } from '@/lib/products';
+import type { Product, SimilarProduct } from '@/types/product';
 
 interface ProductDetailProps {
   product: Product;
   similarProducts: SimilarProduct[];
+}
+
+interface Section {
+  title: string;
+  content: React.ReactNode;
+}
+
+interface FabricOption {
+  name: string;
+  image: string;
+  available: boolean;
+}
+
+interface PolishOption {
+  name: string;
+  image: string;
+  available: boolean;
 }
 
 const ProductDetail: React.FC<ProductDetailProps> = ({ product, similarProducts }) => {
@@ -32,166 +49,326 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product, similarProducts 
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="min-h-screen bg-white">
+      {/* Breadcrumb */}
+      <div className="container mx-auto px-4 py-4">
+        <div className="flex items-center text-sm text-gray-500">
+          <Link href="/" className="hover:text-gray-800">Home</Link>
+          <ChevronRight className="h-4 w-4 mx-2" />
+          <Link href="/furniture" className="hover:text-gray-800">Furniture</Link>
+          <ChevronRight className="h-4 w-4 mx-2" />
+          <span className="text-gray-800">{product.name}</span>
+        </div>
+      </div>
+
       {/* Product Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-        {/* Image Gallery */}
-        <div className="space-y-4">
-          <div className="aspect-square relative bg-gray-100 rounded-lg overflow-hidden">
-            <Image
-              src={product.images[selectedImage]}
-              alt={product.name}
-              fill
-              className="object-cover"
-            />
-          </div>
-          <div className="grid grid-cols-5 gap-4">
-            {product.images.map((image, index) => (
-              <button
-                key={index}
-                onClick={() => setSelectedImage(index)}
-                className={`aspect-square relative bg-gray-100 rounded-lg overflow-hidden ${
-                  selectedImage === index ? 'ring-2 ring-orange-500' : ''
-                }`}
-                title={`View image ${index + 1} of product`}
-                aria-label={`View image ${index + 1} of ${product.name}`}
-              >
+      <div className="container mx-auto px-4 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          {/* Image Gallery */}
+          <div className="space-y-4">
+            <div className="relative">
+              {product.isNew && (
+                <div className="absolute top-4 left-4 z-10 bg-black text-white px-3 py-1 text-sm">
+                  NEW
+                </div>
+              )}
+              <div className="aspect-square relative bg-gray-100 overflow-hidden">
+                {product.images[selectedImage]?.url ? (
                 <Image
-                  src={image}
-                  alt={`${product.name} view ${index + 1}`}
+                  src={product.images[selectedImage].url}
+                  alt={product.images[selectedImage].alt || product.name}
                   fill
                   className="object-cover"
                 />
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Product Info */}
-        <div className="space-y-6">
-          <div>
-            <h1 className="text-3xl font-semibold">{product.name}</h1>
-            <div className="mt-4">
-              <span className="text-2xl font-semibold">₹{product.price.toLocaleString()}</span>
-              {product.originalPrice > product.price && (
-                <>
-                  <span className="ml-3 text-lg line-through text-gray-400">
-                    ₹{product.originalPrice.toLocaleString()}
-                  </span>
-                  <span className="ml-3 text-orange-500">{product.discount}% OFF</span>
-                </>
-              )}
+              ) : null}
+              </div>
+            </div>
+            <div className="grid grid-cols-5 gap-4">
+              {product.images.map((image, index) => (
+                <button
+                  key={index}
+                  onClick={() => setSelectedImage(index)}
+                  className={`aspect-square relative bg-gray-100 overflow-hidden ${
+                    selectedImage === index ? 'ring-2 ring-black' : ''
+                  }`}
+                >
+                  {image?.url ? (
+                    <Image
+                      src={image.url}
+                      alt={image.alt || `${product.name} view ${index + 1}`}
+                      fill
+                      className="object-cover"
+                    />
+                  ) : null}
+                </button>
+              ))}
             </div>
           </div>
 
-          <div className="space-y-4">
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center border rounded-md">
-                <button
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="p-2 hover:bg-gray-100"
-                  aria-label="Decrease quantity"
-                >
-                  <Minus className="h-4 w-4" />
-                </button>
-                <span className="w-12 text-center">{quantity}</span>
-                <button
-                  onClick={() => setQuantity(quantity + 1)}
-                  className="p-2 hover:bg-gray-100"
-                  aria-label="Increase quantity"
-                >
-                  <Plus className="h-4 w-4" />
-                </button>
+          {/* Product Info */}
+          <div className="space-y-8">
+            <div>
+              <h1 className="text-3xl font-medium">{product.name}</h1>
+              <div className="mt-4 space-y-2">
+                <div className="flex items-baseline gap-4">
+                  <span className="text-2xl">₹{product.price.toLocaleString()}</span>
+                  {product.originalPrice > product.price && (
+                    <>
+                      <span className="text-lg line-through text-gray-400">
+                        ₹{product.originalPrice.toLocaleString()}
+                      </span>
+                      <span className="text-orange-500">{product.discount}% OFF</span>
+                    </>
+                  )}
+                </div>
+                <div className="text-sm text-gray-500">
+                  Price inclusive of all taxes | Free shipping
+                </div>
+                {product.emi && (
+                  <div className="flex items-center gap-2 text-sm">
+                    <span>EMI starts from ₹{product.emi.startingPrice.toLocaleString()}</span>
+                    <button className="text-orange-500 hover:underline">View Plans</button>
+                  </div>
+                )}
               </div>
             </div>
 
-            <div className="flex gap-4">
-              <Button
-                className="flex-1 bg-neutral-900 hover:bg-neutral-800 text-white py-6"
-                onClick={() => {/* Add to cart */}}
-              >
-                Add to Cart
-              </Button>
-              <Button
-                className={`p-6 hover:bg-gray-100 ${
-                  isWishlisted ? 'text-orange-500' : 'text-gray-600'
-                }`}
-                variant="outline"
-                onClick={() => setIsWishlisted(!isWishlisted)}
-                aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
-              >
-                <Heart className="h-5 w-5" />
-              </Button>
-              <Button
-                className="p-6 hover:bg-gray-100 text-gray-600"
-                variant="outline"
-                aria-label="Share product"
-              >
-                <Share2 className="h-5 w-5" />
-              </Button>
-            </div>
-          </div>
+            {/* Customization Options */}
+            {(product.customization?.fabricOptions || product.customization?.polishOptions) && (
+              <div className="space-y-6">
+                <h2 className="text-xl font-medium">Customise</h2>
+                <div className="text-sm text-gray-500">
+                  Note: Additional charges are applicable for the following services and products.*
+                </div>
 
-          <div className="space-y-6 pt-6 border-t">
-            <div>
-              <h2 className="text-lg font-semibold mb-2">Description</h2>
-              <p className="text-gray-600">{product.description}</p>
-            </div>
+                {product.customization.fabricOptions && (
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-medium">Fabric Options</h3>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                      {product.customization.fabricOptions.map((option, index) => (
+                        <div
+                          key={index}
+                          className="border p-2 text-center space-y-2"
+                        >
+                          <div className="aspect-square relative">
+                            {option.image ? (
+                              <Image
+                                src={option.image}
+                                alt={option.name || 'Fabric option'}
+                                fill
+                                className="object-cover"
+                              />
+                            ) : null}
+                          </div>
+                          <div className="text-sm">{option.name}</div>
+                          <div className="text-xs text-gray-500">
+                            {option.available ? 'Made to Order' : 'Out of Stock'}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
-            {product.features && product.features.length > 0 && (
-              <div>
-                <h2 className="text-lg font-semibold mb-2">Features</h2>
-                <ul className="list-disc pl-5 space-y-1">
-                  {product.features.map((feature, index) => (
-                    <li key={index} className="text-gray-600">{feature}</li>
-                  ))}
-                </ul>
+                {product.customization.polishOptions && (
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-medium">Polish Finish</h3>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                      {product.customization.polishOptions.map((option, index) => (
+                        <div
+                          key={index}
+                          className="border p-2 text-center space-y-2"
+                        >
+                          <div className="aspect-square relative">
+                            {option.image ? (
+                              <Image
+                                src={option.image}
+                                alt={option.name || 'Polish finish option'}
+                                fill
+                                className="object-cover"
+                              />
+                            ) : null}
+                          </div>
+                          <div className="text-sm">{option.name}</div>
+                          <div className="text-xs text-gray-500">
+                            {option.available ? 'Made to Order' : 'Out of Stock'}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 
-            {product.specifications && Object.keys(product.specifications).length > 0 && (
-              <div>
-                <h2 className="text-lg font-semibold mb-2">Specifications</h2>
-                <div className="space-y-2">
-                  {Object.entries(product.specifications).map(([key, value]) => (
-                    <div key={key} className="text-gray-600">
-                      <span className="font-medium">{key}:</span>
-                      <span className="ml-2">{value as string}</span>
-                    </div>
-                  ))}
+            {/* Quantity and Add to Cart */}
+            <div className="space-y-6">
+              <div className="flex items-center gap-6">
+                <div className="flex items-center border rounded">
+                  <button
+                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                    className="p-3 hover:bg-gray-50"
+                    aria-label="Decrease quantity"
+                  >
+                    <Minus className="h-4 w-4" />
+                  </button>
+                  <span className="w-12 text-center">{quantity}</span>
+                  <button
+                    onClick={() => setQuantity(quantity + 1)}
+                    className="p-3 hover:bg-gray-50"
+                    aria-label="Increase quantity"
+                  >
+                    <Plus className="h-4 w-4" />
+                  </button>
+                </div>
+
+                <Button
+                  className="flex-1 bg-black hover:bg-gray-900 text-white py-6"
+                  onClick={() => {/* Add to cart */}}
+                >
+                  Add to Cart
+                </Button>
+              </div>
+
+              <div className="flex gap-4">
+                <Button
+                  className={`flex-1 ${
+                    isWishlisted ? 'text-orange-500' : 'text-gray-600'
+                  }`}
+                  variant="outline"
+                  onClick={() => setIsWishlisted(!isWishlisted)}
+                >
+                  <Heart className="h-5 w-5 mr-2" />
+                  {isWishlisted ? 'Wishlisted' : 'Add to Wishlist'}
+                </Button>
+                <Button
+                  className="flex-1 text-gray-600"
+                  variant="outline"
+                >
+                  <Share2 className="h-5 w-5 mr-2" />
+                  Share
+                </Button>
+              </div>
+            </div>
+
+            {/* Product Information Sections */}
+            <div className="space-y-4 pt-8">
+              <div className="border-t">
+                <button
+                  className="w-full py-4 flex items-center justify-between"
+                  onClick={() => {/* Toggle description */}}
+                >
+                  <span className="font-medium">Description</span>
+                  <ChevronDown className="h-5 w-5" />
+                </button>
+                <div className="pb-4 text-gray-600">
+                  {product.description}
                 </div>
               </div>
-            )}
+
+              {product.features && product.features.length > 0 && (
+                <div className="border-t">
+                  <button
+                    className="w-full py-4 flex items-center justify-between"
+                    onClick={() => {/* Toggle features */}}
+                  >
+                    <span className="font-medium">Key Features</span>
+                    <ChevronDown className="h-5 w-5" />
+                  </button>
+                  <div className="pb-4">
+                    <ul className="list-disc pl-5 space-y-1 text-gray-600">
+                      {product.features.map((feature: string, index: number) => (
+                        <li key={index}>{feature}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              )}
+
+              {product.specifications && (
+                <div className="border-t">
+                  <button
+                    className="w-full py-4 flex items-center justify-between"
+                    onClick={() => {/* Toggle specifications */}}
+                  >
+                    <span className="font-medium">Specifications</span>
+                    <ChevronDown className="h-5 w-5" />
+                  </button>
+                  <div className="pb-4">
+                    <div className="grid grid-cols-2 gap-4 text-gray-600">
+                      {Object.entries(product.specifications || {}).map(([key, value]) => (
+                        <div key={key}>
+                          <span className="font-medium">{key}:</span>
+                          <span className="ml-2">{String(value)}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {product.warranty && (
+                <div className="border-t">
+                  <button
+                    className="w-full py-4 flex items-center justify-between"
+                    onClick={() => {/* Toggle warranty */}}
+                  >
+                    <span className="font-medium">Warranty</span>
+                    <ChevronDown className="h-5 w-5" />
+                  </button>
+                  <div className="pb-4 text-gray-600">
+                    {product.warranty}
+                  </div>
+                </div>
+              )}
+
+              {product.returnPolicy && (
+                <div className="border-t">
+                  <button
+                    className="w-full py-4 flex items-center justify-between"
+                    onClick={() => {/* Toggle return policy */}}
+                  >
+                    <span className="font-medium">Return Policy</span>
+                    <ChevronDown className="h-5 w-5" />
+                  </button>
+                  <div className="pb-4 text-gray-600">
+                    {product.returnPolicy}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
 
       {/* Similar Products */}
       {similarProducts.length > 0 && (
-        <div className="mt-16">
-          <h2 className="text-2xl font-semibold mb-6">Similar Products</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="container mx-auto px-4 py-16">
+          <h2 className="text-2xl font-medium mb-8">Similar Products</h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {similarProducts.map(product => (
               <Link key={product.id} href={`/product/${product.id}`}>
                 <div className="group">
-                  <div className="aspect-square relative bg-gray-100 rounded-lg overflow-hidden">
-                    <Image
-                      src={product.image}
-                      alt={product.name}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
+                  <div className="aspect-square relative bg-gray-100 overflow-hidden">
+                    {product.image?.url ? (
+                      <Image
+                        src={product.image.url}
+                        alt={product.image.alt || product.name}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    ) : null}
                   </div>
-                  <div className="mt-4">
-                    <h3 className="text-lg font-medium">{product.name}</h3>
-                    <div className="mt-1">
-                      <span className="text-lg font-semibold">₹{product.price.toLocaleString()}</span>
+                  <div className="mt-4 space-y-1">
+                    <h3 className="font-medium">{product.name}</h3>
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-lg">₹{product.price.toLocaleString()}</span>
                       {product.originalPrice > product.price && (
                         <>
-                          <span className="ml-2 text-sm line-through text-gray-400">
+                          <span className="text-sm line-through text-gray-400">
                             ₹{product.originalPrice.toLocaleString()}
                           </span>
-                          <span className="ml-2 text-sm text-orange-500">{product.discount}% OFF</span>
+                          <span className="text-sm text-orange-500">{product.discount}% OFF</span>
                         </>
                       )}
                     </div>
