@@ -11,7 +11,7 @@ export interface DisplayProduct {
   id: string;
   name: string;
   price: number;
-  originalPrice: number;
+  originalPrice?: number;
   discount: number; // Always a number (percentage), 0 if no discount
   image: string; // Single image URL (first image from array)
   badge?: string;

@@ -125,7 +125,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product, similarProducts 
               <div className="mt-4 space-y-2">
                 <div className="flex items-baseline gap-4">
                   <span className="text-2xl">₹{formatPrice(product.price)}</span>
-                  {product.originalPrice > product.price && (
+                  {product.originalPrice && product.originalPrice > product.price && (
                     <>
                       <span className="text-lg line-through text-gray-400">
                         ₹{formatPrice(product.originalPrice)}
@@ -375,7 +375,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product, similarProducts 
                     <h3 className="font-medium">{product.name}</h3>
                     <div className="flex items-baseline gap-2">
                       <span className="text-lg">₹{product.price.toLocaleString()}</span>
-                      {product.originalPrice > product.price && (
+                      {product.originalPrice && product.originalPrice > product.price && (
                         <>
                           <span className="text-sm line-through text-gray-400">
                             ₹{product.originalPrice.toLocaleString()}

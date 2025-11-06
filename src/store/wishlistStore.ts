@@ -5,7 +5,7 @@ export interface WishlistItem {
   id: string;
   name: string;
   price: number;
-  originalPrice: number;
+  originalPrice?: number;
   image: string;
   badge?: string;
   addedAt: number;

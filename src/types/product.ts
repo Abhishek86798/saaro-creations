@@ -32,7 +32,7 @@ export interface Product {
   name: string;
   slug: string;
   price: number;
-  originalPrice: number;
+  originalPrice?: number;
   discount?: string;
   images: ProductImage[];
   description?: string;
@@ -60,7 +60,7 @@ export interface SimilarProduct {
   name: string;
   slug: string;
   price: number;
-  originalPrice: number;
+  originalPrice?: number;
   discount: string;
   image: ProductImage;
   category: string;

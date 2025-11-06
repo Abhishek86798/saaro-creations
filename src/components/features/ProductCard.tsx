@@ -21,7 +21,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   badge,
   emi
 }) => {
-  const hasDiscount = discount > 0 && originalPrice > price;
+  const hasDiscount = discount > 0 && originalPrice !== undefined && originalPrice > price;
   const [imgSrc, setImgSrc] = useState<string>(image || '/images/avatar.png');
   
   const { toggleItem, isInWishlist } = useWishlistStore();

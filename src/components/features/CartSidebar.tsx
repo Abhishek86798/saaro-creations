@@ -17,8 +17,12 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isOpen, onClose }) => {
   const { items, updateQuantity, removeItem, getTotal, getItemCount } = useCartStore();
 
   const calculateSavings = () => {
-    return items.reduce((total, item) => 
-      total + ((item.originalPrice - item.price) * item.quantity), 0);
+    return items.reduce((total, item) => {
+      if (item.originalPrice && item.originalPrice > item.price) {
+        return total + ((item.originalPrice - item.price) * item.quantity);
+      }
+      return total;
+    }, 0);
   };
 
   const totalAmount = getTotal();
@@ -84,7 +88,7 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isOpen, onClose }) => {
                   <div className="mt-2 flex justify-between items-end">
                     <div>
                       <span className="text-lg font-semibold">₹{formatPrice(item.price)}</span>
-                      {item.originalPrice > item.price && (
+                      {item.originalPrice && item.originalPrice > item.price && (
                         <span className="ml-2 text-xs line-through text-gray-400">
                           ₹{formatPrice(item.originalPrice)}
                         </span>
