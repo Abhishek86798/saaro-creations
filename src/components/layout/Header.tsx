@@ -5,8 +5,10 @@ import Link from 'next/link';
 import { Search, User, Heart, ShoppingBag, Menu, ChevronDown, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import CartSidebar from '@/components/features/CartSidebar';
+import LoginModal from '@/components/features/LoginModal';
 import { useCartStore } from '@/store/cartStore';
 import { useWishlistStore } from '@/store/wishlistStore';
+import { useAuthStore } from '@/store/authStore';
 
 interface SubMenuItem {
   title: string;
@@ -31,9 +33,11 @@ const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const [activeDropdown, setActiveDropdown] = React.useState<string | null>(null);
   const [mounted, setMounted] = React.useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = React.useState(false);
   
   const { isOpen: isCartOpen, setCartOpen, getItemCount } = useCartStore();
   const { getItemCount: getWishlistCount } = useWishlistStore();
+  const { isAuthenticated } = useAuthStore();
   
   const cartCount = getItemCount();
   const wishlistCount = getWishlistCount();
@@ -227,11 +231,29 @@ const Header = () => {
                   <Search className="h-5 w-5" />
                   <span className="sr-only">Search</span>
                 </Button>
-                <Button variant="ghost" size="icon" className="hidden md:flex">
-                  <User className="h-5 w-5" />
-                  <span className="sr-only">Account</span>
-                </Button>
-                <Link href="/wishlist">
+                
+                {/* Login/Profile Button */}
+                {mounted && (
+                  isAuthenticated ? (
+                    <Link href="/my-account">
+                      <Button variant="ghost" size="icon" className="hidden md:flex">
+                        <User className="h-5 w-5" />
+                        <span className="sr-only">Account</span>
+                      </Button>
+                    </Link>
+                  ) : (
+                    <Button 
+                      variant="ghost" 
+                      onClick={() => setIsLoginModalOpen(true)}
+                      className="hidden md:flex items-center gap-1 px-3"
+                    >
+                      <User className="h-5 w-5" />
+                      <span className="text-sm">Login</span>
+                    </Button>
+                  )
+                )}
+                
+                <Link href="/my-account?section=wishlist">
                   <Button variant="ghost" size="icon" className="relative">
                     <Heart className="h-5 w-5" />
                     {mounted && wishlistCount > 0 && (
@@ -440,6 +462,12 @@ const Header = () => {
           </div>
         )}
       </header>
+
+      {/* Login Modal */}
+      <LoginModal 
+        isOpen={isLoginModalOpen} 
+        onClose={() => setIsLoginModalOpen(false)} 
+      />
     </>
   );
 };
