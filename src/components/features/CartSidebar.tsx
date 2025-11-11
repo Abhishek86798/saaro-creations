@@ -8,13 +8,8 @@ import { formatPrice } from '@/lib/transforms';
 import Image from 'next/image';
 import Link from 'next/link';
 
-interface CartSidebarProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
-
-const CartSidebar: React.FC<CartSidebarProps> = ({ isOpen, onClose }) => {
-  const { items, updateQuantity, removeItem, getTotal, getItemCount } = useCartStore();
+const CartSidebar: React.FC = () => {
+  const { items, updateQuantity, removeItem, getTotal, getItemCount, isOpen, setCartOpen } = useCartStore();
 
   const calculateSavings = () => {
     return items.reduce((total, item) => {
@@ -40,7 +35,7 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isOpen, onClose }) => {
         <div className="flex items-center justify-between p-4 border-b">
           <h2 className="text-xl font-semibold">Your Cart</h2>
           <button 
-            onClick={onClose} 
+            onClick={() => setCartOpen(false)} 
             className="p-2 hover:bg-gray-100 rounded-full"
             title="Close cart"
             aria-label="Close cart"
@@ -55,7 +50,7 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isOpen, onClose }) => {
             <div className="text-center py-12">
               <ShoppingBag className="h-16 w-16 mx-auto text-gray-300 mb-4" />
               <p className="text-gray-500 mb-4">Your cart is empty</p>
-              <Button onClick={onClose} variant="outline">
+              <Button onClick={() => setCartOpen(false)} variant="outline">
                 Continue Shopping
               </Button>
             </div>
@@ -146,9 +141,9 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isOpen, onClose }) => {
                 </div>
               </div>
             </div>
-            
-            <Link href="/checkout" onClick={onClose}>
-              <Button 
+
+            <Link href="/checkout" onClick={() => setCartOpen(false)}>
+              <Button
                 className="w-full bg-neutral-900 hover:bg-neutral-800 text-white py-3"
               >
                 Proceed to Checkout
@@ -157,7 +152,7 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isOpen, onClose }) => {
             <Button 
               variant="outline"
               className="w-full"
-              onClick={onClose}
+              onClick={() => setCartOpen(false)}
             >
               Continue Shopping
             </Button>

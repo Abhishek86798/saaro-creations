@@ -35,7 +35,7 @@ const Header = () => {
   const [mounted, setMounted] = React.useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = React.useState(false);
   
-  const { isOpen: isCartOpen, setCartOpen, getItemCount } = useCartStore();
+  const { setCartOpen, getItemCount } = useCartStore();
   const { getItemCount: getWishlistCount } = useWishlistStore();
   const { isAuthenticated } = useAuthStore();
   
@@ -193,15 +193,16 @@ const Header = () => {
 
   return (
     <>
-      {/* Top Banner removed */}
+      <CartSidebar />
 
       {/* Main Header */}
       <header className="border-b bg-white sticky top-0 z-50 shadow-sm">
-        {/* Top Section with Logo */}
+        {/* Single Row Header */}
         <div className="container mx-auto px-4">
-          <div className="flex flex-col items-center justify-center py-4">
-            {/* Logo */}
-            <Link href="/" className="flex flex-col items-center text-center">
+          <div className="flex items-center justify-between h-16">
+            
+            {/* Logo - Left Side */}
+             <Link href="/" className="flex flex-col items-center text-center">
               <span className="text-2xl font-serif font-bold tracking-tight text-orange-500">
                 SAARO
               </span>
@@ -210,95 +211,92 @@ const Header = () => {
               </span>
             </Link>
 
-            {/* Second Row: Links and Action Icons */}
-            <div className="flex items-center justify-between w-full mt-4 lg:justify-center lg:gap-8">
-              {/* Top Links - Desktop */}
-              <div className="hidden lg:flex items-center space-x-8 text-sm">
-                <Link href="/best-sellers" className="hover:text-neutral-600 transition-colors">
-                  Best Sellers
-                </Link>
-                <Link href="/design-masters" className="hover:text-neutral-600 transition-colors">
-                  Design Masters
-                </Link>
-                <Link href="/interior-services" className="hover:text-neutral-600 transition-colors">
-                  Interior Services
-                </Link>
-              </div>
+            {/* Center - Top Links */}
+            <div className="hidden lg:flex items-center space-x-8 text-sm absolute left-1/2 transform -translate-x-1/2">
+              <Link href="/best-sellers" className="hover:text-gray-600 transition-colors whitespace-nowrap">
+                Best Sellers
+              </Link>
+              <Link href="/design-masters" className="hover:text-gray-600 transition-colors whitespace-nowrap">
+                Design Masters
+              </Link>
+              <Link href="/interior-services" className="hover:text-gray-600 transition-colors whitespace-nowrap">
+                Interior Services
+              </Link>
+              
+            </div>
 
-              {/* Action Icons */}
-              <div className="flex items-center space-x-2 md:space-x-3 ml-auto lg:ml-8">
-                <Button variant="ghost" size="icon" className="hidden md:flex">
-                  <Search className="h-5 w-5" />
-                  <span className="sr-only">Search</span>
-                </Button>
-                
-                {/* Login/Profile Button */}
-                {mounted && (
-                  isAuthenticated ? (
-                    <Link href="/my-account">
-                      <Button variant="ghost" size="icon" className="hidden md:flex">
-                        <User className="h-5 w-5" />
-                        <span className="sr-only">Account</span>
-                      </Button>
-                    </Link>
-                  ) : (
-                    <Button 
-                      variant="ghost" 
-                      onClick={() => setIsLoginModalOpen(true)}
-                      className="hidden md:flex items-center gap-1 px-3"
-                    >
-                      <User className="h-5 w-5" />
-                      <span className="text-sm">Login</span>
-                    </Button>
-                  )
-                )}
-                
-                <Link href="/my-account?section=wishlist">
-                  <Button variant="ghost" size="icon" className="relative">
-                    <Heart className="h-5 w-5" />
-                    {mounted && wishlistCount > 0 && (
-                      <span className="absolute -top-1 -right-1 bg-neutral-900 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                        {wishlistCount}
-                      </span>
-                    )}
-                    <span className="sr-only">Wishlist</span>
-                  </Button>
-                </Link>
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  className="relative" 
-                  onClick={() => setCartOpen(true)}
-                >
-                  <ShoppingBag className="h-5 w-5" />
-                  {mounted && cartCount > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-neutral-900 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                      {cartCount}
+            {/* Right Side - My Account and Icons */}
+            <div className="flex items-center space-x-4 flex-shrink-0">
+              {/* Login/My Account Link */}
+              {mounted && (
+                isAuthenticated ? (
+                  <Link href="/my-account" className="hidden md:flex items-center gap-1 text-sm hover:text-gray-600 transition-colors whitespace-nowrap">
+                    <User className="h-4 w-4" />
+                    <span>My Account</span>
+                  </Link>
+                ) : (
+                  <button 
+                    onClick={() => setIsLoginModalOpen(true)}
+                    className="hidden md:flex items-center gap-1 text-sm hover:text-gray-600 transition-colors whitespace-nowrap"
+                  >
+                    <User className="h-4 w-4" />
+                    <span>Login</span>
+                  </button>
+                )
+              )}
+
+              {/* Search Icon */}
+              <Button variant="ghost" size="icon" className="hidden md:flex h-8 w-8">
+                <Search className="h-4 w-4" />
+                <span className="sr-only">Search</span>
+              </Button>
+
+              {/* Wishlist */}
+              <Link href="/my-account?section=wishlist">
+                <Button variant="ghost" size="icon" className="relative h-8 w-8">
+                  <Heart className="h-4 w-4" />
+                  {mounted && wishlistCount > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-black text-white text-xs rounded-full h-4 w-4 flex items-center justify-center text-[10px]">
+                      {wishlistCount}
                     </span>
                   )}
-                  <span className="sr-only">Cart</span>
+                  <span className="sr-only">Wishlist</span>
                 </Button>
-                
-                {/* Cart Sidebar */}
-                <CartSidebar 
-                  isOpen={isCartOpen} 
-                  onClose={() => setCartOpen(false)} 
-                />
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="lg:hidden"
-                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                >
-                  {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-                  <span className="sr-only">Menu</span>
-                </Button>
-              </div>
+              </Link>
+
+              {/* Cart */}
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="relative h-8 w-8" 
+                onClick={() => setCartOpen(true)}
+              >
+                <ShoppingBag className="h-4 w-4" />
+                {mounted && cartCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-black text-white text-xs rounded-full h-4 w-4 flex items-center justify-center text-[10px]">
+                    {cartCount}
+                  </span>
+                )}
+                <span className="sr-only">Cart</span>
+              </Button>
+
+              {/* Mobile Menu Button */}
+              <Button
+                variant="ghost"
+                size="icon"
+                className="lg:hidden"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              >
+                {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+                <span className="sr-only">Menu</span>
+              </Button>
             </div>
           </div>
+        </div>
 
-          {/* Navigation Menu - Desktop */}
-          <nav className="hidden lg:flex items-center justify-center space-x-8 py-4 border-t">
+        {/* Navigation Menu - Desktop */}
+        <div className="border-t border-gray-200">
+          <nav className="hidden lg:flex items-center justify-center space-x-8 h-12 container mx-auto px-4">
             {navKeys.map((key: string) => {
               const item = navigationData[key as keyof NavigationData];
               const hasSubmenu = item.submenu && item.submenu.length > 0;
@@ -306,7 +304,7 @@ const Header = () => {
               return (
                 <div
                   key={key}
-                  className="relative group"
+                  className="relative group h-full flex items-center"
                   onMouseEnter={() => hasSubmenu && setActiveDropdown(key)}
                   onMouseLeave={() => setActiveDropdown(null)}
                 >
@@ -314,12 +312,12 @@ const Header = () => {
                     href={item.href}
                     className={`text-sm font-medium transition-colors flex items-center gap-1 ${
                       item.featured
-                        ? 'text-amber-600 hover:text-amber-700'
-                        : 'hover:text-neutral-600'
+                        ? 'text-orange-500 hover:text-orange-600'
+                        : 'text-gray-900 hover:text-gray-600'
                     }`}
                   >
                     {item.title}
-                    {hasSubmenu && <ChevronDown className="h-4 w-4" />}
+                    {hasSubmenu && <ChevronDown className="h-3 w-3" />}
                   </Link>
 
                   {/* Mega Menu Dropdown */}

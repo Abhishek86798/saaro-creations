@@ -3,23 +3,27 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import ProductCard from '@/components/features/ProductCard';
 import { getAllProducts } from '@/lib/products';
 import { DisplayFurnitureProduct } from '@/types/display';
 import { toDisplayFurnitureProduct } from '@/lib/transforms';
 
 const categories = [
-  { id: 1, name: 'Entryway', image: '/images/furniture/Entryway-image.jpg' },
-  { id: 2, name: 'Living', image: '/images/furniture/Living-image.jpg' },
-  { id: 3, name: 'Dining', image: '/images/furniture/Dining-image.jpg' },
-  { id: 4, name: 'Bedroom', image: '/images/furniture/Bedroom-image.jpg' },
-  { id: 5, name: 'Office Home', image: '/images/furniture/Office_Home_-image.jpg' },
-  { id: 6, name: 'In-Stock Furniture', image: '/images/furniture/In-Stock_Furniture-image.jpg' },
+  { id: 1, name: 'Entryway', image: '/images/furnituretype/Entryway-image.jpg', href: '/furniture/entryway' },
+  { id: 2, name: 'Living', image: '/images/furnituretype/Living-image.jpg', href: '/furniture/living' },
+  { id: 3, name: 'Dining', image: '/images/furnituretype/Dining-image.jpg', href: '/furniture/dining' },
+  { id: 4, name: 'Bedroom', image: '/images/furnituretype/Bedroom-image.jpg', href: '/furniture/bedroom' },
+  { id: 5, name: 'Office Home', image: '/images/furniture/Office_Home_-image.jpg', href: '/furniture/office' },
+  { id: 6, name: 'In-Stock Furniture', image: '/images/furniture/In-Stock_Furniture-image.jpg', href: '/furniture/in-stock' },
+  { id: 7, name: 'Storage Furniture', image: '/images/furniture/Storage-image.jpg', href: '/furniture/storage' },
+  { id: 8, name: 'Quick Ship Furniture', image: '/images/furniture/Quick-Ship-image.jpg', href: '/furniture/quick-ship' },
+  { id: 9, name: 'Seating', image: '/images/furniture/Seating-image.jpg', href: '/furniture/seating' },
+  { id: 10, name: 'Tables', image: '/images/furniture/Tables-image.jpg', href: '/furniture/tables' },
 ];
 
 export default function FurniturePage() {
   const [products, setProducts] = useState<DisplayFurnitureProduct[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState({ min: 0, max: 500000 });
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
@@ -46,9 +50,20 @@ export default function FurniturePage() {
   );
   const sizes = Array.from(new Set(products.map((p) => p.size)));
 
+  const handleScroll = (direction: 'left' | 'right') => {
+    const container = document.getElementById('category-scroll');
+    if (container) {
+      const scrollAmount = 300;
+      if (direction === 'left') {
+        container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+      } else {
+        container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      }
+    }
+  };
+
   // Filter products
   const filteredProducts = products.filter((product) => {
-    if (selectedCategory !== 'All' && product.category !== selectedCategory) return false;
     if (selectedTypes.length > 0 && product.type && !selectedTypes.includes(product.type)) return false;
     if (selectedSizes.length > 0 && !selectedSizes.includes(product.size)) return false;
     if (product.price < priceRange.min || product.price > priceRange.max) return false;
@@ -63,40 +78,71 @@ export default function FurniturePage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Breadcrumb */}
-      <div className="container mx-auto px-4 py-4">
-        <div className="flex items-center gap-2 text-sm text-gray-600">
-          <Link href="/" className="hover:text-amber-600">
-            Home
-          </Link>
-          <span>/</span>
-          <span className="text-gray-900">Furniture</span>
+      <div className="border-b">
+        <div className="container mx-auto px-4 py-3">
+          <div className="flex items-center gap-2 text-sm text-gray-600">
+            <Link href="/" className="hover:text-gray-900">Home</Link>
+            <span>&gt;</span>
+            <span className="text-gray-900">Furniture</span>
+          </div>
         </div>
       </div>
 
-      {/* Category Navigation */}
-      <div className="border-b border-gray-200">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center gap-8 overflow-x-auto py-6 scrollbar-hide">
+      {/* Category Navigation Carousel */}
+      <div className="border-b border-gray-200 bg-white">
+        <div className="container mx-auto px-4 py-6 relative">
+          {/* Left Arrow */}
+          <button
+            onClick={() => handleScroll('left')}
+            className="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-2 hover:bg-gray-50 transition-colors"
+            aria-label="Scroll left"
+          >
+            <ChevronLeft className="h-6 w-6 text-gray-600" />
+          </button>
+
+          {/* Scrollable Container */}
+          <div
+            id="category-scroll"
+            className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth px-12"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
             {categories.map((category) => (
-              <button
+              <Link
                 key={category.id}
-                onClick={() => setSelectedCategory(category.name)}
-                className={`flex flex-col items-center gap-2 min-w-[120px] group ${
-                  selectedCategory === category.name ? 'opacity-100' : 'opacity-70 hover:opacity-100'
-                }`}
+                href={category.href}
+                className="flex-shrink-0 group"
               >
-                <div className="relative w-24 h-24 rounded-lg overflow-hidden border border-gray-200">
-                  <Image
-                    src={category.image}
-                    alt={category.name}
-                    fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-300"
-                  />
+                {/* Horizontal Card: Text Left, Image Right */}
+                <div className="flex items-center gap-4 min-w-[280px] p-4 border-2 border-gray-200 rounded-lg hover:border-orange-400 transition-colors bg-white">
+                  {/* Category Name - Left Side */}
+                  <div className="flex-1">
+                    <span className="text-base font-medium text-gray-900 group-hover:text-orange-500 transition-colors whitespace-nowrap">
+                      {category.name}
+                    </span>
+                  </div>
+                  
+                  {/* Category Image - Right Side */}
+                  <div className="relative w-24 h-20 rounded-md overflow-hidden flex-shrink-0">
+                    <Image
+                      src={category.image}
+                      alt={category.name}
+                      fill
+                      className="object-cover group-hover:scale-110 transition-transform duration-300"
+                    />
+                  </div>
                 </div>
-                <span className="text-sm font-medium text-gray-900">{category.name}</span>
-              </button>
+              </Link>
             ))}
           </div>
+
+          {/* Right Arrow */}
+          <button
+            onClick={() => handleScroll('right')}
+            className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-2 hover:bg-gray-50 transition-colors"
+            aria-label="Scroll right"
+          >
+            <ChevronRight className="h-6 w-6 text-gray-600" />
+          </button>
         </div>
       </div>
 
