@@ -5,9 +5,11 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import ProductCard from '@/components/features/ProductCard';
 
 export default function HomePage() {
   const [vestaIndex, setVestaIndex] = React.useState(0);
+  const [heroImageIndex, setHeroImageIndex] = React.useState(0);
   
   const vestaImages = [
     '/images/vesta.webp',
@@ -22,6 +24,23 @@ export default function HomePage() {
     '/images/vesta (9).webp',
   ];
 
+  // Hero section rotating images
+  const heroImages = [
+    '/images/best-sellers/Jake_Modular_Sectional_Sofa.webp',
+    '/images/best-sellers/Nakashi_Dining_Table.webp',
+    '/images/best-sellers/Moscow_Upholstered_Bed_Cot.webp',
+    '/images/best-sellers/Rover_Armchair.webp',
+    '/images/best-sellers/Saturn_Single_Pillar_Dining_Table_-_5_Feet.webp',
+  ];
+
+  // Auto-rotate hero images every 4 seconds
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setHeroImageIndex((prev) => (prev + 1) % heroImages.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [heroImages.length]);
+
   const nextVesta = () => {
     setVestaIndex((prev) => (prev + 1) % vestaImages.length);
   };
@@ -34,13 +53,25 @@ export default function HomePage() {
     <div className="min-h-screen">
       {/* Hero Section */}
       <section className="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden">
-        <Image
-          src="/images/New_Arrivals.webp"
-          alt="New Arrivals"
-          fill
-          className="object-cover"
-          priority
-        />
+        {/* Animated Product Images */}
+        <div className="absolute inset-0">
+          {heroImages.map((image, index) => (
+            <div
+              key={image}
+              className={`absolute inset-0 transition-all duration-[2000ms] ease-in-out ${
+                index === heroImageIndex ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
+              }`}
+            >
+              <Image
+                src={image}
+                alt={`Product ${index + 1}`}
+                fill
+                className="object-cover"
+                priority={index === 0}
+              />
+            </div>
+          ))}
+        </div>
         <div className="absolute inset-0 bg-black/40" />
         <div className="relative text-center px-4 sm:px-6 max-w-4xl z-10">
           <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-3 sm:mb-4 text-white font-serif leading-tight">
@@ -52,12 +83,14 @@ export default function HomePage() {
           <p className="text-sm sm:text-base md:text-lg lg:text-xl mb-6 sm:mb-8 text-white/80">
             where every piece feels like a first.
           </p>
-          <Button
-            size="lg"
-            className="bg-amber-600 hover:bg-amber-700 text-white font-semibold px-6 sm:px-8 py-2.5 sm:py-3 text-base sm:text-lg"
-          >
-            SHOP NOW +
-          </Button>
+          <Link href="/furniture">
+            <Button
+              size="lg"
+              className="bg-amber-600 hover:bg-amber-700 text-white font-semibold px-6 sm:px-8 py-2.5 sm:py-3 text-base sm:text-lg"
+            >
+              SHOP NOW +
+            </Button>
+          </Link>
         </div>
       </section>
 
@@ -70,14 +103,14 @@ export default function HomePage() {
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
             {[
-              { name: 'Incurve Episodes', image: '/images/Incurve_Episodes.webp' },
-              { name: 'Monocraft Collection', image: '/images/Monocraft_Collection.webp' },
-              { name: 'Home and Cottage', image: '/images/Home_and_Cottage.webp' },
-              { name: 'French Country Collection', image: '/images/French_Country_Collection.webp' }
+              { name: 'Incurve Episodes', image: '/images/Incurve_Episodes.webp', href: '/furniture/living?category=Chairs' },
+              { name: 'Monocraft Collection', image: '/images/Monocraft_Collection.webp', href: '/decor' },
+              { name: 'Home and Cottage', image: '/images/Home_and_Cottage.webp', href: '/lightings' },
+              { name: 'French Country Collection', image: '/images/French_Country_Collection.webp', href: '/furniture/living?category=Sofas+%26+Sectionals' }
             ].map((collection, index) => (
               <Link 
                 key={index} 
-                href={`/collections/${collection.name.toLowerCase().replace(/ /g, '-')}`}
+                href={collection.href}
                 className="group"
               >
                 <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
@@ -159,83 +192,46 @@ export default function HomePage() {
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-            {[
-              { 
-                name: 'Preston Curved Lounge Chair', 
-                image: '/images/Sofas.webp',
-                price: '₹130,625',
-                discount: '5% Off',
-                emi: '₹11,605.26',
-                badge: 'NEW',
-                status: 'Made To Order'
-              },
-              { 
-                name: 'Arque Curved Sofa', 
-                image: '/images/Coffee_Tables.webp',
-                price: '₹218,500',
-                discount: '5% Off',
-                emi: '₹19,412.44',
-                badge: 'NEW',
-                status: 'Made To Order'
-              },
-              { 
-                name: 'Tess Curved Sofa', 
-                image: '/images/Beds.webp',
-                price: '₹198,600',
-                discount: null,
-                emi: '₹17,644.44',
-                badge: 'NEW',
-                status: 'Made To Order'
-              },
-              { 
-                name: 'Apollo Club Sofa', 
-                image: '/images/Dining_Tables.webp',
-                price: '₹96,000',
-                discount: '25% Off',
-                emi: '₹8,529.03',
-                badge: 'SALE',
-                status: 'Made To Order'
-              }
-            ].map((product, index) => (
-              <Link 
-                key={index}
-                href={`/products/${product.name.toLowerCase().replace(/ /g, '-')}`}
-                className="group"
-              >
-                <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300">
-                  <div className="relative h-72 overflow-hidden">
-                    <Image
-                      src={product.image}
-                      alt={product.name}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                    {product.badge && (
-                      <span className={`absolute top-3 left-3 px-3 py-1 text-xs font-bold text-white rounded ${
-                        product.badge === 'NEW' ? 'bg-amber-600' : 'bg-red-600'
-                      }`}>
-                        {product.badge}
-                      </span>
-                    )}
-                    <span className="absolute top-3 right-3 px-2 py-1 text-xs font-medium bg-white/90 text-gray-700 rounded">
-                      {product.status}
-                    </span>
-                  </div>
-                  <div className="p-4">
-                    <h3 className="text-base font-semibold text-gray-900 mb-2 group-hover:text-amber-600 transition-colors line-clamp-2">
-                      {product.name}
-                    </h3>
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="text-lg font-bold text-gray-900">{product.price}</span>
-                      {product.discount && (
-                        <span className="text-sm text-green-600 font-medium">{product.discount}</span>
-                      )}
-                    </div>
-                    <p className="text-xs text-gray-500">EMI starts from {product.emi}</p>
-                  </div>
-                </div>
-              </Link>
-            ))}
+            <ProductCard
+              id="nicholas-lounge-chair"
+              name="Nicholas Lounge Chair"
+              price={90000}
+              originalPrice={120000}
+              discount={25}
+              image="/images/furniture/Nicholas_Lounge_Chair.webp"
+              badge="SALE"
+              emi={9435}
+            />
+            <ProductCard
+              id="jake-modular-sectional-sofa"
+              name="Jake Modular Sectional Sofa"
+              price={333200}
+              originalPrice={392000}
+              discount={15}
+              image="/images/best-sellers/Jake_Modular_Sectional_Sofa.webp"
+              badge="NEW"
+              emi={34945}
+            />
+            <ProductCard
+              id="ebba-chaise-sectional-sofa"
+              name="Ebba Chaise Sectional Sofa"
+              price={301750}
+              originalPrice={301750}
+              discount={0}
+              image="/images/furniture/Ebba_Chaise_Sectional_Sofa.webp"
+              badge="MADE TO ORDER"
+              emi={31634}
+            />
+            <ProductCard
+              id="candice-rattan-single-seater"
+              name="Candice Rattan Single Seater"
+              price={65925}
+              originalPrice={65925}
+              discount={0}
+              image="/images/furniture/Candice_Rattan_Single_Seater.webp"
+              badge="MADE TO ORDER"
+              emi={6911}
+            />
           </div>
         </div>
       </section>
