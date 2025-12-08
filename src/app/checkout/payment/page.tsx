@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { MapPin, Check, Package, Truck, ArrowLeft } from 'lucide-react';
 import { PaymentOptions, PaymentMethod } from '@/components/checkout/PaymentOptions';
 import { Button } from '@/components/ui/button';
@@ -177,9 +178,11 @@ export default function PaymentPage() {
               <div className="space-y-3 mb-4 max-h-64 overflow-y-auto">
                 {items.map((item) => (
                   <div key={item.id} className="flex gap-3">
-                    <img
+                    <Image
                       src={item.image}
                       alt={item.name}
+                      width={64}
+                      height={64}
                       className="w-16 h-16 object-cover rounded"
                     />
                     <div className="flex-1">

@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { MapPin, Plus, Check, Package, Truck } from 'lucide-react';
 import { AddressCard } from '@/components/checkout/AddressCard';
 import { AddressForm } from '@/components/checkout/AddressForm';
@@ -161,9 +162,11 @@ export default function CheckoutPage() {
               <div className="space-y-3 mb-4 max-h-64 overflow-y-auto">
                 {items.map((item) => (
                   <div key={item.id} className="flex gap-3">
-                    <img
+                    <Image
                       src={item.image}
                       alt={item.name}
+                      width={64}
+                      height={64}
                       className="w-16 h-16 object-cover rounded"
                     />
                     <div className="flex-1">

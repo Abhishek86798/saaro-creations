@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { CheckCircle, Package, MapPin, CreditCard, Truck, Home, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useOrderStore, Order } from '@/store/orderStore';
@@ -77,7 +78,7 @@ export default function OrderConfirmationPage() {
           
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Order Placed Successfully!</h1>
           <p className="text-gray-600 mb-6">
-            Thank you for your order. We'll send you shipping confirmation when your items ship.
+            Thank you for your order. We&apos;ll send you shipping confirmation when your items ship.
           </p>
 
           <div className="inline-flex items-center gap-2 bg-gray-100 px-6 py-3 rounded-lg">
@@ -147,9 +148,11 @@ export default function OrderConfirmationPage() {
           <div className="space-y-4">
             {order.items.map((item) => (
               <div key={item.id} className="flex gap-4 pb-4 border-b last:border-b-0 last:pb-0">
-                <img
+                <Image
                   src={item.image}
                   alt={item.name}
+                  width={96}
+                  height={96}
                   className="w-24 h-24 object-cover rounded-lg"
                 />
                 <div className="flex-1">
