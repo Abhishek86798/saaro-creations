@@ -50,6 +50,27 @@ export function AccentsClient() {
   }, []);
 
   // Infinite scroll observer
+  const loadMore = React.useCallback(() => {
+    if (loading || !hasMore) return;
+
+    setLoading(true);
+    setTimeout(() => {
+      const nextPage = page + 1;
+      const startIndex = page * ITEMS_PER_PAGE;
+      const endIndex = startIndex + ITEMS_PER_PAGE;
+      const nextProducts = products.slice(startIndex, endIndex);
+
+      if (nextProducts.length > 0) {
+        setDisplayedProducts((prev) => [...prev, ...nextProducts]);
+        setPage(nextPage);
+        setHasMore(endIndex < products.length);
+      } else {
+        setHasMore(false);
+      }
+      setLoading(false);
+    }, 500); // Simulate network delay
+  }, [loading, hasMore, page, products]);
+
   React.useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -70,28 +91,7 @@ export function AccentsClient() {
         observer.unobserve(currentTarget);
       }
     };
-  }, [hasMore, loading, page]);
-
-  const loadMore = () => {
-    if (loading || !hasMore) return;
-
-    setLoading(true);
-    setTimeout(() => {
-      const nextPage = page + 1;
-      const startIndex = page * ITEMS_PER_PAGE;
-      const endIndex = startIndex + ITEMS_PER_PAGE;
-      const nextProducts = products.slice(startIndex, endIndex);
-
-      if (nextProducts.length > 0) {
-        setDisplayedProducts((prev) => [...prev, ...nextProducts]);
-        setPage(nextPage);
-        setHasMore(endIndex < products.length);
-      } else {
-        setHasMore(false);
-      }
-      setLoading(false);
-    }, 500); // Simulate network delay
-  };
+  }, [hasMore, loading, loadMore]);
 
   const formatPrice = (price: number): string => {
     const priceStr = Math.round(price).toString();

@@ -1,37 +1,54 @@
+/**
+ * FURNITURE PAGE REFACTORING TEMPLATE
+ * 
+ * Use this template to refactor all furniture sub-pages (living, bedroom, office, etc.)
+ * 
+ * STEPS TO REFACTOR A PAGE:
+ * 1. Copy this template
+ * 2. Update the category name ('Living', 'Bedroom', etc.)
+ * 3. Update the categories array with appropriate sub-categories
+ * 4. Update image paths
+ * 5. Test the page
+ */
+
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import Image from 'next/image';
 import { getProductsByCategory } from '@/data/productHelpers';
+import { SectionHeader } from '@/components/features/SectionHeader';
 import { ProductGrid } from '@/components/features/ProductGrid';
-import { CategoryCarousel } from '@/components/features/CategoryCarousel';
-import { ProductToolbar } from '@/components/features/ProductToolbar';
 
-const DiningPage = () => {
+const FurniturePage = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [sortBy, setSortBy] = useState('featured');
   const [filters, setFilters] = useState({
     priceRange: { min: 0, max: 500000 },
     discount: [] as number[],
   });
 
-  // Get all dining products from centralized data
-  const allDiningProducts = getProductsByCategory('Dining');
+  // ⚠️ CHANGE THIS: Update category name
+  const CATEGORY_NAME = 'YOUR_CATEGORY'; // e.g., 'Living', 'Bedroom', 'Dining'
   
-  // Category tabs for Dining
+  // Get all products from centralized data
+  const allProducts = getProductsByCategory(CATEGORY_NAME);
+  
+  // ⚠️ CHANGE THIS: Update sub-categories
   const categories = [
-    { id: 'all', name: 'All Dining', image: '/images/dining/Dining_Tables-image.jpg' },
-    { id: 'Dining Tables', name: 'Dining Tables', image: '/images/dining/Dining_Tables-image.jpg' },
-    { id: 'Dining Chairs', name: 'Dining Chairs', image: '/images/dining/Dining_Chairs-image.jpg' },
-    { id: 'Bar & Counter Stools', name: 'Bar & Counter Stools', image: '/images/dining/Bar_Counter_Stools-image.jpg' },
-    { id: 'Buffets & Consoles', name: 'Buffets Consoles', image: '/images/dining/Buffets_Consoles-image.jpg' },
-    { id: 'Dining Benches', name: 'Dining Benches', image: '/images/dining/Dining_Benches-image.jpg' },
-    { id: 'Bar Cabinets', name: 'Bar Cabinets', image: '/images/dining/Bar_Cabinets-image.jpg' },
+    { id: 'all', name: `All ${CATEGORY_NAME}`, image: '/images/CATEGORY/IMAGE.jpg' },
+    { id: 'Type 1', name: 'Type 1', image: '/images/CATEGORY/IMAGE.jpg' },
+    { id: 'Type 2', name: 'Type 2', image: '/images/CATEGORY/IMAGE.jpg' },
+    // Add more categories...
   ];
+
+  // ⚠️ CHANGE THIS: Update page title and description
+  const PAGE_TITLE = `${CATEGORY_NAME} Collection`;
+  const PAGE_DESCRIPTION = `Explore our curated ${CATEGORY_NAME.toLowerCase()} collection`;
 
   // Filter products based on selected category and filters
   const filteredProducts = useMemo(() => {
-    let filtered = allDiningProducts;
+    let filtered = allProducts;
 
     // Filter by sub-category (type)
     if (selectedCategory && selectedCategory !== 'all') {
@@ -53,7 +70,18 @@ const DiningPage = () => {
     }
 
     return filtered;
-  }, [allDiningProducts, selectedCategory, filters]);
+  }, [allProducts, selectedCategory, filters]);
+
+  const handleScroll = (direction: 'left' | 'right') => {
+    const container = document.getElementById('category-scroll');
+    if (container) {
+      const scrollAmount = 300;
+      container.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth',
+      });
+    }
+  };
 
   const handleCategoryChange = (categoryId: string) => {
     setSelectedCategory(categoryId === 'all' ? null : categoryId);
@@ -61,33 +89,76 @@ const DiningPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Breadcrumb */}
-      <div className="border-b">
-        <div className="container mx-auto px-4 py-3">
-          <div className="flex items-center gap-2 text-sm text-gray-600">
-            <Link href="/" className="hover:text-gray-900">Home</Link>
-            <span>&gt;</span>
-            <Link href="/furniture" className="hover:text-gray-900">Furniture</Link>
-            <span>&gt;</span>
-            <span className="text-gray-900">Dining</span>
-          </div>
+      {/* Header Section */}
+      <div className="bg-white border-b">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <SectionHeader
+            title={PAGE_TITLE}
+            description={PAGE_DESCRIPTION}
+            badge="Premium Furniture"
+          />
         </div>
       </div>
 
       {/* Category Carousel */}
-      <CategoryCarousel
-        categories={categories}
-        selectedCategory={selectedCategory || 'all'}
-        onCategoryChange={handleCategoryChange}
-        isClickable={false}
-      />
+      <div className="bg-white border-b sticky top-0 z-10 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="relative">
+            <button
+              onClick={() => handleScroll('left')}
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-2 hover:bg-gray-50"
+              aria-label="Scroll left"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+
+            <div
+              id="category-scroll"
+              className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth px-10 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+            >
+              {categories.map((category) => (
+                <motion.button
+                  key={category.id}
+                  onClick={() => handleCategoryChange(category.id)}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className={`flex-shrink-0 w-32 text-center ${
+                    (selectedCategory === category.id || (category.id === 'all' && !selectedCategory))
+                      ? 'ring-2 ring-orange-500'
+                      : ''
+                  }`}
+                >
+                  <div className="relative aspect-square rounded-lg overflow-hidden mb-2">
+                    <Image
+                      src={category.image}
+                      alt={category.name}
+                      fill
+                      sizes="128px"
+                      className="object-cover"
+                    />
+                  </div>
+                  <p className="text-sm font-medium text-gray-900">{category.name}</p>
+                </motion.button>
+              ))}
+            </div>
+
+            <button
+              onClick={() => handleScroll('right')}
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-2 hover:bg-gray-50"
+              aria-label="Scroll right"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+      </div>
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex gap-8 overflow-hidden">
+        <div className="flex gap-8">
           {/* Sidebar Filters */}
-          <aside className="hidden lg:block w-64 flex-shrink-0 h-[calc(100vh-8rem)] overflow-y-auto sticky top-32">
-            <div className="bg-white rounded-lg p-6">
+          <aside className="hidden lg:block w-64 flex-shrink-0">
+            <div className="bg-white rounded-lg p-6 sticky top-32">
               <h3 className="text-lg font-semibold mb-4">Filters</h3>
 
               {/* Price Range */}
@@ -172,18 +243,13 @@ const DiningPage = () => {
           </aside>
 
           {/* Products Grid */}
-          <div className="flex-1 h-[calc(100vh-8rem)] overflow-y-auto">
-            <ProductToolbar
-              resultCount={filteredProducts.length}
-              sortValue={sortBy}
-              onSortChange={setSortBy}
-            />
+          <div className="flex-1">
             <ProductGrid
               products={filteredProducts}
               emptyMessage={
                 selectedCategory
                   ? `No products found in ${selectedCategory}`
-                  : 'No dining products found'
+                  : `No ${CATEGORY_NAME.toLowerCase()} products found`
               }
             />
           </div>
@@ -193,4 +259,4 @@ const DiningPage = () => {
   );
 };
 
-export default DiningPage;
+export default FurniturePage;

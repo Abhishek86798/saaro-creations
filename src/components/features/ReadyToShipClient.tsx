@@ -3,7 +3,7 @@
 import * as React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Heart, ChevronDown } from 'lucide-react';
+import { Heart } from 'lucide-react';
 import { useWishlistStore } from '@/store/wishlistStore';
 import type { Product } from '@/types/product';
 
@@ -141,6 +141,27 @@ export function ReadyToShipClient({ products: initialProducts }: ReadyToShipClie
   }, []);
 
   // Infinite scroll observer
+  const loadMore = React.useCallback(() => {
+    if (loading || !hasMore) return;
+
+    setLoading(true);
+    setTimeout(() => {
+      const nextPage = page + 1;
+      const startIndex = page * ITEMS_PER_PAGE;
+      const endIndex = startIndex + ITEMS_PER_PAGE;
+      const nextProducts = filteredProducts.slice(startIndex, endIndex);
+
+      if (nextProducts.length > 0) {
+        setDisplayedProducts((prev) => [...prev, ...nextProducts]);
+        setPage(nextPage);
+        setHasMore(endIndex < filteredProducts.length);
+      } else {
+        setHasMore(false);
+      }
+      setLoading(false);
+    }, 500);
+  }, [loading, hasMore, page, filteredProducts]);
+
   React.useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -161,28 +182,7 @@ export function ReadyToShipClient({ products: initialProducts }: ReadyToShipClie
         observer.unobserve(currentTarget);
       }
     };
-  }, [hasMore, loading, page]);
-
-  const loadMore = () => {
-    if (loading || !hasMore) return;
-
-    setLoading(true);
-    setTimeout(() => {
-      const nextPage = page + 1;
-      const startIndex = page * ITEMS_PER_PAGE;
-      const endIndex = startIndex + ITEMS_PER_PAGE;
-      const nextProducts = filteredProducts.slice(startIndex, endIndex);
-
-      if (nextProducts.length > 0) {
-        setDisplayedProducts((prev) => [...prev, ...nextProducts]);
-        setPage(nextPage);
-        setHasMore(endIndex < filteredProducts.length);
-      } else {
-        setHasMore(false);
-      }
-      setLoading(false);
-    }, 500);
-  };
+  }, [hasMore, loading, loadMore]);
 
   const formatPrice = (price: number): string => {
     const priceStr = Math.round(price).toString();

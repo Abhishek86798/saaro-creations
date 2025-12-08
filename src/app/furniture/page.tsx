@@ -1,13 +1,14 @@
 'use client';
 
-import Image from 'next/image';
+import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 import ProductCard from '@/components/features/ProductCard';
+import { CategoryCarousel } from '@/components/features/CategoryCarousel';
+import { ProductToolbar } from '@/components/features/ProductToolbar';
 import { getAllProducts } from '@/lib/products';
 import { DisplayFurnitureProduct } from '@/types/display';
 import { toDisplayFurnitureProduct } from '@/lib/transforms';
+import { useSearchParams } from 'next/navigation';
 
 const categories = [
   { id: 1, name: 'Entryway', image: '/images/furnituretype/Entryway-image.jpg', href: '/furniture/entryway' },
@@ -22,7 +23,8 @@ const categories = [
   { id: 10, name: 'Tables', image: '/images/furniture/Tables-image.jpg', href: '/furniture/tables' },
 ];
 
-export default function FurniturePage() {
+function FurniturePageContent() {
+  const searchParams = useSearchParams();
   const [products, setProducts] = useState<DisplayFurnitureProduct[]>([]);
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState({ min: 0, max: 500000 });
@@ -40,27 +42,19 @@ export default function FurniturePage() {
     loadProducts();
   }, []);
 
-  const formatPrice = (price: number) => {
-    return price.toLocaleString('en-IN');
-  };
+  // Apply URL filters on page load
+  useEffect(() => {
+    const typeParam = searchParams.get('type');
+    if (typeParam) {
+      setSelectedTypes([typeParam]);
+    }
+  }, [searchParams]);
 
   // Get unique product types (filter out undefined)
   const productTypes = Array.from(
     new Set(products.map((p) => p.type).filter((t): t is string => !!t))
   );
   const sizes = Array.from(new Set(products.map((p) => p.size)));
-
-  const handleScroll = (direction: 'left' | 'right') => {
-    const container = document.getElementById('category-scroll');
-    if (container) {
-      const scrollAmount = 300;
-      if (direction === 'left') {
-        container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-      } else {
-        container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-      }
-    }
-  };
 
   // Filter products
   const filteredProducts = products.filter((product) => {
@@ -89,69 +83,17 @@ export default function FurniturePage() {
       </div>
 
       {/* Category Navigation Carousel */}
-      <div className="border-b border-gray-200 bg-white">
-        <div className="container mx-auto px-4 py-6 relative">
-          {/* Left Arrow */}
-          <button
-            onClick={() => handleScroll('left')}
-            className="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-2 hover:bg-gray-50 transition-colors"
-            aria-label="Scroll left"
-          >
-            <ChevronLeft className="h-6 w-6 text-gray-600" />
-          </button>
-
-          {/* Scrollable Container */}
-          <div
-            id="category-scroll"
-            className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth px-12"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-          >
-            {categories.map((category) => (
-              <Link
-                key={category.id}
-                href={category.href}
-                className="flex-shrink-0 group"
-              >
-                {/* Horizontal Card: Text Left, Image Right */}
-                <div className="flex items-center gap-4 min-w-[280px] p-4 border-2 border-gray-200 rounded-lg hover:border-orange-400 transition-colors bg-white">
-                  {/* Category Name - Left Side */}
-                  <div className="flex-1">
-                    <span className="text-base font-medium text-gray-900 group-hover:text-orange-500 transition-colors whitespace-nowrap">
-                      {category.name}
-                    </span>
-                  </div>
-                  
-                  {/* Category Image - Right Side */}
-                  <div className="relative w-24 h-20 rounded-md overflow-hidden flex-shrink-0">
-                    <Image
-                      src={category.image}
-                      alt={category.name}
-                      fill
-                      className="object-cover group-hover:scale-110 transition-transform duration-300"
-                    />
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-
-          {/* Right Arrow */}
-          <button
-            onClick={() => handleScroll('right')}
-            className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-2 hover:bg-gray-50 transition-colors"
-            aria-label="Scroll right"
-          >
-            <ChevronRight className="h-6 w-6 text-gray-600" />
-          </button>
-        </div>
-      </div>
+      <CategoryCarousel
+        categories={categories}
+        isClickable={true}
+      />
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-8">
-        <div className="flex gap-8">
+        <div className="flex gap-8 overflow-hidden">
           {/* Sidebar Filters */}
-          <div className="w-64 flex-shrink-0">
-            <div className="sticky top-4">
+          <aside className="w-64 flex-shrink-0 h-[calc(100vh-8rem)] overflow-y-auto sticky top-32">
+            <div>
               <h3 className="text-lg font-bold mb-6">Browse by</h3>
 
               {/* Product Type Filter */}
@@ -207,7 +149,7 @@ export default function FurniturePage() {
                   </select>
                   <span className="text-gray-400">to</span>
                   <select className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm" aria-label="Maximum price">
-                    <option>₹ {formatPrice(priceRange.max)}</option>
+                    <option>₹ {priceRange.max.toLocaleString('en-IN')}</option>
                   </select>
                 </div>
               </div>
@@ -266,32 +208,20 @@ export default function FurniturePage() {
                 </div>
               </div>
             </div>
-          </div>
+          </aside>
 
           {/* Products Grid */}
-          <div className="flex-1">
-            {/* Results Header */}
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold">{filteredProducts.length} Results</h2>
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-600">Sort:</span>
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                  className="px-4 py-2 border border-gray-300 rounded text-sm font-medium"
-                  aria-label="Sort products"
-                >
-                  <option value="featured">Featured</option>
-                  <option value="price-low">Price: Low to High</option>
-                  <option value="price-high">Price: High to Low</option>
-                  <option value="newest">Newest</option>
-                  <option value="discount">Discount</option>
-                </select>
-              </div>
-            </div>
+          <div className="flex-1 h-[calc(100vh-8rem)] overflow-y-auto">
+            <main className="pb-8">
+              {/* Toolbar with Results & Sort */}
+              <ProductToolbar
+                resultCount={filteredProducts.length}
+                sortValue={sortBy}
+                onSortChange={setSortBy}
+              />
 
-            {/* Products Grid */}
-            <div className="grid grid-cols-3 gap-6">
+              {/* Products Grid */}
+              <div className="grid grid-cols-3 gap-6">
               {filteredProducts.map((product) => (
                 <ProductCard
                   key={product.id}
@@ -306,9 +236,18 @@ export default function FurniturePage() {
                 />
               ))}
             </div>
+            </main>
           </div>
         </div>
       </div>
     </div>
+  );
+}
+
+export default function FurniturePage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-white flex items-center justify-center">Loading...</div>}>
+      <FurniturePageContent />
+    </Suspense>
   );
 }

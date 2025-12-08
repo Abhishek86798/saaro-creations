@@ -25,12 +25,24 @@ const CartSidebar: React.FC = () => {
   const itemCount = getItemCount();
 
   return (
-    <div 
-      className={`fixed right-0 top-0 h-full w-96 bg-white shadow-xl transform transition-transform duration-300 ease-in-out z-50 ${
-        isOpen ? 'translate-x-0' : 'translate-x-full'
-      }`}
-    >
-      <div className="flex flex-col h-full">
+    <>
+      <div
+  className={`fixed inset-0 transition-all duration-300 ${
+    isOpen
+      ? 'bg-black/40 backdrop-blur-sm z-40 pointer-events-auto'
+      : 'bg-black/0 -z-10 pointer-events-none'
+  }`}
+  onClick={() => isOpen && setCartOpen(false)}
+/>
+
+      
+      {/* Cart Sidebar */}
+      <div 
+        className={`fixed right-0 top-0 h-full w-96 bg-white shadow-xl transform transition-transform duration-300 ease-in-out z-50 ${
+          isOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}
+      >
+        <div className="flex flex-col h-full">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b">
           <h2 className="text-xl font-semibold">Your Cart</h2>
@@ -159,7 +171,8 @@ const CartSidebar: React.FC = () => {
           </div>
         )}
       </div>
-    </div>
+      </div>
+    </>
   );
 };
 

@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage } from 'zustand/middleware';
 
 export interface CartItem {
   id: string;
@@ -18,6 +18,7 @@ export interface CartItem {
 interface CartStore {
   items: CartItem[];
   isOpen: boolean;
+  _hasHydrated: boolean;
   
   // Actions
   addItem: (item: Omit<CartItem, 'quantity'>) => void;
@@ -26,6 +27,7 @@ interface CartStore {
   clearCart: () => void;
   toggleCart: () => void;
   setCartOpen: (isOpen: boolean) => void;
+  setHasHydrated: (state: boolean) => void;
   
   // Computed
   getItemCount: () => number;
@@ -38,6 +40,7 @@ export const useCartStore = create<CartStore>()(
     (set, get) => ({
       items: [],
       isOpen: false,
+      _hasHydrated: false,
 
       addItem: (item) => {
         const items = get().items;
@@ -83,6 +86,10 @@ export const useCartStore = create<CartStore>()(
         set({ isOpen });
       },
 
+      setHasHydrated: (state) => {
+        set({ _hasHydrated: state });
+      },
+
       getItemCount: () => {
         return get().items.reduce((total, item) => total + item.quantity, 0);
       },
@@ -100,6 +107,11 @@ export const useCartStore = create<CartStore>()(
     }),
     {
       name: 'saaro-cart-storage',
+      storage: createJSONStorage(() => localStorage),
+      skipHydration: true,
+      onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true);
+      },
     }
   )
 );

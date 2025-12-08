@@ -111,18 +111,18 @@ export default function HomePage() {
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
-              { name: 'Sofas', image: '/images/Sofas.webp', count: '150+ Designs' },
-              { name: 'Coffee Tables', image: '/images/Coffee_Tables.webp', count: '80+ Designs' },
-              { name: 'Accents', image: '/images/Accents.webp', count: '200+ Pieces' },
-              { name: 'Beds', image: '/images/Beds.webp', count: '60+ Styles' },
-              { name: 'Lightings', image: '/images/Lightings.webp', count: '100+ Fixtures' },
-              { name: 'Armoires & Wardrobes', image: '/images/Armoires_Wardrobes.webp', count: '40+ Units' },
-              { name: 'Dining Tables', image: '/images/Dining_Tables.webp', count: '70+ Tables' },
-              { name: 'Dining Chairs', image: '/images/Dining_Chairs.webp', count: '120+ Chairs' }
+              { name: 'Sofas', image: '/images/Sofas.webp', count: '150+ Designs', href: '/furniture?type=Sofas%20%26%20Sectionals' },
+              { name: 'Coffee Tables', image: '/images/Coffee_Tables.webp', count: '80+ Designs', href: '/furniture?type=Coffee%20Tables' },
+              { name: 'Accents', image: '/images/Accents.webp', count: '200+ Pieces', href: '/decor' },
+              { name: 'Beds', image: '/images/Beds.webp', count: '60+ Styles', href: '/furniture/bedroom' },
+              { name: 'Lightings', image: '/images/Lightings.webp', count: '100+ Fixtures', href: '/lightings' },
+              { name: 'Armoires & Wardrobes', image: '/images/Armoires_Wardrobes.webp', count: '40+ Units', href: '/furniture/bedroom' },
+              { name: 'Dining Tables', image: '/images/Dining_Tables.webp', count: '70+ Tables', href: '/furniture/dining' },
+              { name: 'Dining Chairs', image: '/images/Dining_Chairs.webp', count: '120+ Chairs', href: '/furniture/dining' }
             ].map((product, index) => (
               <Link 
                 key={index} 
-                href={`/products/${product.name.toLowerCase().replace(/ & /g, '-').replace(/ /g, '-')}`}
+                href={product.href}
                 className="group"
               >
                 <div className="relative bg-white rounded-lg overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300">
@@ -299,14 +299,14 @@ export default function HomePage() {
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {[
-              { name: 'Living Room', image: '/images/Living_Room.webp' },
-              { name: 'Dining Room', image: '/images/Dining_Room.webp' },
-              { name: 'Bed Room', image: '/images/Bed_Room.webp' },
-              { name: 'Outdoor & Indoor Living', image: '/images/Outdoor_Indoor_Living.webp' }
+              { name: 'Living Room', image: '/images/Living_Room.webp', href: '/furniture/living' },
+              { name: 'Dining Room', image: '/images/Dining_Room.webp', href: '/furniture/dining' },
+              { name: 'Bed Room', image: '/images/Bed_Room.webp', href: '/furniture/bedroom' },
+              { name: 'Outdoor & Indoor Living', image: '/images/Outdoor_Indoor_Living.webp', href: '/outdoor' }
             ].map((room, index) => (
               <Link 
                 key={index} 
-                href={`/rooms/${room.name.toLowerCase().replace(/ & /g, '-').replace(/ /g, '-')}`}
+                href={room.href}
                 className="group"
               >
                 <div className="relative h-64 sm:h-72 md:h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300">
@@ -365,100 +365,6 @@ export default function HomePage() {
                   </div>
                 </div>
               </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Design Masters Section */}
-      <section className="py-12 sm:py-16 md:py-20 bg-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 sm:mb-10 md:mb-12 gap-4">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 font-serif">Meet our Design Masters</h2>
-            <Link 
-              href="/design-masters" 
-              className="text-amber-600 hover:text-amber-700 font-medium flex items-center gap-2 group text-sm sm:text-base"
-            >
-              View All
-              <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 transition-transform group-hover:translate-x-1" />
-            </Link>
-          </div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
-            {[
-              {
-                name: 'Says Who',
-                specialty: 'Creative Directors',
-                description: 'Contemporary design duo known for their minimalist and functional approach to furniture design.',
-                featured: 'Modern Collection'
-              },
-              {
-                name: 'Sanne Protin',
-                specialty: 'Industrial Designer',
-                description: 'Innovative designer blending traditional craftsmanship with contemporary aesthetics.',
-                featured: 'Signature Series'
-              },
-              {
-                name: 'Morten Georgsen',
-                specialty: 'Furniture Designer',
-                description: 'Danish designer focused on timeless pieces that merge elegance with comfort.',
-                featured: 'Classic Elegance'
-              },
-              {
-                name: 'Jacob Amtorp',
-                specialty: 'Product Designer',
-                description: 'Award-winning designer creating sophisticated furniture with sustainable materials.',
-                featured: 'Eco Luxe Line'
-              }
-            ].map((designer, index) => (
-              <div 
-                key={index} 
-                className="group cursor-pointer bg-gray-50 rounded-lg overflow-hidden hover:shadow-xl transition-all duration-300"
-              >
-                <div className="p-6 bg-white">
-                  <h3 className="text-xl font-bold text-gray-900 mb-1">{designer.name}</h3>
-                  <p className="text-sm text-amber-600 font-medium mb-3">{designer.specialty}</p>
-                  <p className="text-sm text-gray-600 mb-3 line-clamp-2">
-                    {designer.description}
-                  </p>
-                  <div className="border-t pt-3">
-                    <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">Featured Work</p>
-                    <p className="text-sm font-semibold text-gray-900">{designer.featured}</p>
-                  </div>
-                  <button className="mt-4 text-amber-600 hover:text-amber-700 font-medium text-sm flex items-center gap-1 group-hover:gap-2 transition-all">
-                    Explore Work
-                    <ArrowRight className="h-4 w-4" />
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Featured In - Media Awards */}
-      <section className="py-10 sm:py-12 md:py-16 bg-gray-100">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="text-center mb-6 sm:mb-8 md:mb-10">
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-1 sm:mb-2 text-gray-900 font-serif">Featured In</h2>
-            <p className="text-gray-600 text-sm sm:text-base">Recognized by leading media outlets</p>
-          </div>
-          
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8 items-center">
-            {[
-              '/images/media-awards.jpg',
-              '/images/media-awards (1).jpg',
-              '/images/media-awards (2).jpg',
-              '/images/media-awards (3).jpg'
-            ].map((award, index) => (
-              <div key={index} className="relative h-16 sm:h-20 md:h-24 grayscale hover:grayscale-0 transition-all duration-300">
-                <Image
-                  src={award}
-                  alt={`Media Award ${index + 1}`}
-                  fill
-                  className="object-contain"
-                />
-              </div>
             ))}
           </div>
         </div>

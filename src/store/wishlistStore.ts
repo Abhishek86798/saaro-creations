@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage } from 'zustand/middleware';
 
 export interface WishlistItem {
   id: string;
@@ -13,6 +13,7 @@ export interface WishlistItem {
 
 interface WishlistStore {
   items: WishlistItem[];
+  _hasHydrated: boolean;
   
   // Actions
   addItem: (item: Omit<WishlistItem, 'addedAt'>) => void;
@@ -20,6 +21,7 @@ interface WishlistStore {
   toggleItem: (item: Omit<WishlistItem, 'addedAt'>) => boolean;
   clearWishlist: () => void;
   isInWishlist: (id: string) => boolean;
+  setHasHydrated: (state: boolean) => void;
   
   // Computed
   getItemCount: () => number;
@@ -29,6 +31,7 @@ export const useWishlistStore = create<WishlistStore>()(
   persist(
     (set, get) => ({
       items: [],
+      _hasHydrated: false,
 
       addItem: (item) => {
         const items = get().items;
@@ -68,9 +71,18 @@ export const useWishlistStore = create<WishlistStore>()(
       getItemCount: () => {
         return get().items.length;
       },
+
+      setHasHydrated: (state) => {
+        set({ _hasHydrated: state });
+      },
     }),
     {
       name: 'saaro-wishlist-storage',
+      storage: createJSONStorage(() => localStorage),
+      skipHydration: true,
+      onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true);
+      },
     }
   )
 );
