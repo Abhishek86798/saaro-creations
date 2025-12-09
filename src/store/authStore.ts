@@ -9,9 +9,11 @@ interface User {
 interface AuthStore {
   user: User | null;
   isAuthenticated: boolean;
+  isInitialized: boolean;
   login: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
   getUser: () => User | null;
+  initialize: () => void;
 }
 
 export const useAuthStore = create<AuthStore>()(
@@ -19,6 +21,7 @@ export const useAuthStore = create<AuthStore>()(
     (set, get) => ({
       user: null,
       isAuthenticated: false,
+      isInitialized: false,
       
       login: async (email: string, password: string) => {
         // Dummy authentication
@@ -39,6 +42,18 @@ export const useAuthStore = create<AuthStore>()(
       
       getUser: () => {
         return get().user;
+      },
+
+      initialize: () => {
+        const state = get();
+        // On first initialization, ensure user is logged out
+        if (!state.isInitialized) {
+          set({ 
+            user: null, 
+            isAuthenticated: false,
+            isInitialized: true 
+          });
+        }
       },
     }),
     {
