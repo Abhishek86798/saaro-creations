@@ -31,7 +31,7 @@ export const useAuthStore = create<AuthStore>()(
           if (email === 'admin123@gmail.com' && password === 'admin123') {
             const user = {
               email: 'admin123@gmail.com',
-              name: 'Abhishek Kokadwar',
+              name: 'Ajay Patil',
             };
             set({ user, isAuthenticated: true });
             return true;

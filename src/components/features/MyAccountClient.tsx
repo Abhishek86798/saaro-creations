@@ -225,8 +225,8 @@ const MyAccountClient: React.FC = () => {
   ]);
   
   const [accountDetails, setAccountDetails] = useState({
-    firstName: user?.name?.split(' ')[0] || 'Abhishek',
-    lastName: user?.name?.split(' ')[1] || 'Kokadwar',
+    firstName: user?.name?.split(' ')[0] || 'Ajay',
+    lastName: user?.name?.split(' ')[1] || 'Patil',
     email: user?.email || 'admin123@gmail.com',
     mobile: '',
     dob: '',
