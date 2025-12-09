@@ -254,22 +254,19 @@ const MyAccountClient: React.FC = () => {
   };
 
   const handleSaveAccount = () => {
-    // Implement save account logic
-    console.log('Saving account details...', accountDetails);
+    // TODO: Implement save account logic with API call
   };
 
   const handleChangePassword = () => {
-    // Implement password change logic
+    // TODO: Implement password change logic with API call
     if (passwordData.newPassword !== passwordData.confirmPassword) {
       alert('Passwords do not match');
       return;
     }
-    console.log('Changing password...');
   };
 
   const handleAddAddress = () => {
-    // Implement add address logic
-    console.log('Adding new address...');
+    // TODO: Implement add address logic with API call
   };
 
   const renderOrders = () => (

@@ -74,10 +74,9 @@ export function InteriorServicesClient() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate API call
+    // TODO: Replace with actual API call to submit form data
     await new Promise(resolve => setTimeout(resolve, 1500));
 
-    console.log('Form submitted:', formData);
     setSubmitSuccess(true);
     setIsSubmitting(false);
 

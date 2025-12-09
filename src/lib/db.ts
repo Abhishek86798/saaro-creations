@@ -1,9 +1,22 @@
 import { PrismaClient } from '@prisma/client';
+import { env } from './env';
 
-const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined;
-};
+// Improved type-safe global declaration
+declare global {
+  var prisma: PrismaClient | undefined;
+}
 
-export const prisma = globalForPrisma.prisma ?? new PrismaClient();
+// Create Prisma client with validated environment variables
+export const prisma = global.prisma ?? new PrismaClient({
+  datasources: {
+    db: {
+      url: env.DATABASE_URL,
+    },
+  },
+  log: env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
+});
 
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
+// Store in global for development (hot reload support)
+if (env.NODE_ENV !== 'production') {
+  global.prisma = prisma;
+}

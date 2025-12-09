@@ -45,6 +45,8 @@ model Category {
   children    Category[] @relation("CategoryHierarchy")
   products    Product[]
   
+  @@index([slug])
+  @@index([parentId])
   @@map("categories")
 }
 
@@ -57,6 +59,8 @@ model Collection {
   featured    Boolean   @default(false)
   products    Product[]
   
+  @@index([slug])
+  @@index([featured])
   @@map("collections")
 }
 
@@ -84,6 +88,12 @@ model Product {
   orderItems  OrderItem[]
   wishlist    WishlistItem[]
   
+  @@index([slug])
+  @@index([categoryId])
+  @@index([collectionId])
+  @@index([featured])
+  @@index([published])
+  @@index([createdAt])
   @@map("products")
 }
 
@@ -130,6 +140,10 @@ model Order {
   items         OrderItem[]
   payment       Payment?
   
+  @@index([orderNumber])
+  @@index([status])
+  @@index([userId])
+  @@index([createdAt])
   @@map("orders")
 }
 
@@ -206,6 +220,8 @@ model Review {
   product   Product  @relation(fields: [productId], references: [id])
   
   @@unique([userId, productId])
+  @@index([productId])
+  @@index([rating])
   @@map("reviews")
 }
 

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { ChevronRight, Minus, Plus, Share2, Heart, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import type { Product, SimilarProduct } from '@/types/product';
@@ -19,6 +20,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product, similarProducts 
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   
+  const router = useRouter();
   const { addItem: addToCart } = useCartStore();
   const { toggleItem: toggleWishlist, isInWishlist } = useWishlistStore();
   const isWishlisted = isInWishlist(product.id);
@@ -34,6 +36,23 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product, similarProducts 
         badge: product.badge,
       });
     }
+  };
+
+  const handleBuyNow = () => {
+    // Add items to cart
+    for (let i = 0; i < quantity; i++) {
+      addToCart({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        originalPrice: product.originalPrice,
+        image: product.images[0]?.url || '/images/avatar.png',
+        badge: product.badge,
+      });
+    }
+    
+    // Navigate to checkout page
+    router.push('/checkout');
   };
 
   const handleToggleWishlist = () => {
@@ -254,7 +273,11 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product, similarProducts 
               </div>
 
               <div className="flex gap-4">
-                <Button variant="outline" className="flex-1">
+                <Button 
+                  variant="outline" 
+                  className="flex-1"
+                  onClick={handleBuyNow}
+                >
                   BUY NOW
                 </Button>
                 <button className="p-3 border rounded hover:bg-gray-50" aria-label="Share product">
