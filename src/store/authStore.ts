@@ -25,17 +25,14 @@ export const useAuthStore = create<AuthStore>()(
       
       login: async (email: string, password: string) => {
         // TODO: Replace with real authentication (e.g., NextAuth, custom API)
-        // This is a temporary implementation for development only
-        if (process.env.NODE_ENV === 'development') {
-          // Dummy authentication for development
-          if (email === 'admin123@gmail.com' && password === 'admin123') {
-            const user = {
-              email: 'admin123@gmail.com',
-              name: 'Ajay Patil',
-            };
-            set({ user, isAuthenticated: true });
-            return true;
-          }
+        // Dummy authentication - works in all environments
+        if (email === 'admin123@gmail.com' && password === 'admin123') {
+          const user = {
+            email: 'admin123@gmail.com',
+            name: 'Ajay Patil',
+          };
+          set({ user, isAuthenticated: true });
+          return true;
         }
         return false;
       },
