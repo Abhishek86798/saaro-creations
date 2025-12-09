@@ -12,16 +12,16 @@ export default function HomePage() {
   const [heroImageIndex, setHeroImageIndex] = React.useState(0);
   
   const vestaImages = [
-    '/images/vesta.webp',
-    '/images/vesta (1).webp',
-    '/images/vesta (2).webp',
-    '/images/vesta (3).webp',
-    '/images/vesta (4).webp',
-    '/images/vesta (5).webp',
-    '/images/vesta (6).webp',
-    '/images/vesta (7).webp',
-    '/images/vesta (8).webp',
-    '/images/vesta (9).webp',
+    '/images/products/vesta.webp',
+    '/images/products/vesta (1).webp',
+    '/images/products/vesta (2).webp',
+    '/images/products/vesta (3).webp',
+    '/images/products/vesta (4).webp',
+    '/images/products/vesta (5).webp',
+    '/images/products/vesta (6).webp',
+    '/images/products/vesta (7).webp',
+    '/images/products/vesta (8).webp',
+    '/images/products/vesta (9).webp',
   ];
 
   // Hero section rotating images
@@ -103,10 +103,10 @@ export default function HomePage() {
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
             {[
-              { name: 'Incurve Episodes', image: '/images/Incurve_Episodes.webp', href: '/furniture/living?category=Chairs' },
-              { name: 'Monocraft Collection', image: '/images/Monocraft_Collection.webp', href: '/decor' },
-              { name: 'Home and Cottage', image: '/images/Home_and_Cottage.webp', href: '/lightings' },
-              { name: 'French Country Collection', image: '/images/French_Country_Collection.webp', href: '/furniture/living?category=Sofas+%26+Sectionals' }
+              { name: 'Incurve Episodes', image: '/images/collections/Incurve_Episodes.webp', href: '/furniture/living?category=Chairs' },
+              { name: 'Monocraft Collection', image: '/images/collections/Monocraft_Collection.webp', href: '/decor' },
+              { name: 'Home and Cottage', image: '/images/collections/Home_and_Cottage.webp', href: '/lightings' },
+              { name: 'French Country Collection', image: '/images/collections/French_Country_Collection.webp', href: '/furniture/living?category=Sofas+%26+Sectionals' }
             ].map((collection, index) => (
               <Link 
                 key={index} 
@@ -144,14 +144,14 @@ export default function HomePage() {
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
-              { name: 'Sofas', image: '/images/Sofas.webp', count: '150+ Designs', href: '/furniture?type=Sofas%20%26%20Sectionals' },
-              { name: 'Coffee Tables', image: '/images/Coffee_Tables.webp', count: '80+ Designs', href: '/furniture?type=Coffee%20Tables' },
-              { name: 'Accents', image: '/images/Accents.webp', count: '200+ Pieces', href: '/decor' },
-              { name: 'Beds', image: '/images/Beds.webp', count: '60+ Styles', href: '/furniture/bedroom' },
-              { name: 'Lightings', image: '/images/Lightings.webp', count: '100+ Fixtures', href: '/lightings' },
-              { name: 'Armoires & Wardrobes', image: '/images/Armoires_Wardrobes.webp', count: '40+ Units', href: '/furniture/bedroom' },
-              { name: 'Dining Tables', image: '/images/Dining_Tables.webp', count: '70+ Tables', href: '/furniture/dining' },
-              { name: 'Dining Chairs', image: '/images/Dining_Chairs.webp', count: '120+ Chairs', href: '/furniture/dining' }
+              { name: 'Sofas', image: '/images/product-types/Sofas.webp', count: '150+ Designs', href: '/furniture?type=Sofas%20%26%20Sectionals' },
+              { name: 'Coffee Tables', image: '/images/product-types/Coffee_Tables.webp', count: '80+ Designs', href: '/furniture?type=Coffee%20Tables' },
+              { name: 'Accents', image: '/images/categories/Accents.webp', count: '200+ Pieces', href: '/decor' },
+              { name: 'Beds', image: '/images/product-types/Beds.webp', count: '60+ Styles', href: '/furniture/bedroom' },
+              { name: 'Lightings', image: '/images/categories/Lightings.webp', count: '100+ Fixtures', href: '/lightings' },
+              { name: 'Armoires & Wardrobes', image: '/images/categories/Armoires_Wardrobes.webp', count: '40+ Units', href: '/furniture/bedroom' },
+              { name: 'Dining Tables', image: '/images/product-types/Dining_Tables.webp', count: '70+ Tables', href: '/furniture/dining' },
+              { name: 'Dining Chairs', image: '/images/product-types/Dining_Chairs.webp', count: '120+ Chairs', href: '/furniture/dining' }
             ].map((product, index) => (
               <Link 
                 key={index} 
@@ -295,10 +295,10 @@ export default function HomePage() {
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {[
-              { name: 'Living Room', image: '/images/Living_Room.webp', href: '/furniture/living' },
-              { name: 'Dining Room', image: '/images/Dining_Room.webp', href: '/furniture/dining' },
-              { name: 'Bed Room', image: '/images/Bed_Room.webp', href: '/furniture/bedroom' },
-              { name: 'Outdoor & Indoor Living', image: '/images/Outdoor_Indoor_Living.webp', href: '/outdoor' }
+              { name: 'Living Room', image: '/images/categories/Living_Room.webp', href: '/furniture/living' },
+              { name: 'Dining Room', image: '/images/categories/Dining_Room.webp', href: '/furniture/dining' },
+              { name: 'Bed Room', image: '/images/categories/Bed_Room.webp', href: '/furniture/bedroom' },
+              { name: 'Outdoor & Indoor Living', image: '/images/categories/Outdoor_Indoor_Living.webp', href: '/outdoor' }
             ].map((room, index) => (
               <Link 
                 key={index} 
@@ -335,11 +335,11 @@ export default function HomePage() {
           
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 md:gap-6">
             {[
-              { name: 'Coastal Farmhouse', image: '/images/Home_and_Cottage.webp' },
-              { name: 'Contemporary Modern', image: '/images/Monocraft_Collection.webp' },
-              { name: 'Tropical Modern', image: '/images/Incurve_Episodes.webp' },
-              { name: 'Classic Modern', image: '/images/French_Country_Collection.webp' },
-              { name: 'Mid-century Modern', image: '/images/Living_Room.webp' }
+              { name: 'Coastal Farmhouse', image: '/images/collections/Home_and_Cottage.webp' },
+              { name: 'Contemporary Modern', image: '/images/collections/Monocraft_Collection.webp' },
+              { name: 'Tropical Modern', image: '/images/collections/Incurve_Episodes.webp' },
+              { name: 'Classic Modern', image: '/images/collections/French_Country_Collection.webp' },
+              { name: 'Mid-century Modern', image: '/images/categories/Living_Room.webp' }
             ].map((style, index) => (
               <Link 
                 key={index}

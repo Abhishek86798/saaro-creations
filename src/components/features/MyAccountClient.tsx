@@ -202,7 +202,7 @@ const MyAccountClient: React.FC = () => {
   const [addresses] = useState<Address[]>([
     {
       id: '1',
-      name: 'Abhishek Kokadwar',
+      name: 'Ajay Patil',
       phone: '+91 98765 43210',
       addressLine1: 'Flat 302, Sunshine Apartments',
       addressLine2: 'Lane 5, Koregaon Park',
@@ -213,7 +213,7 @@ const MyAccountClient: React.FC = () => {
     },
     {
       id: '2',
-      name: 'Abhishek Kokadwar',
+      name: 'Ajay Patil',
       phone: '+91 98765 43210',
       addressLine1: 'Office No. 15, Tech Tower',
       addressLine2: 'Hinjewadi Phase 1',
